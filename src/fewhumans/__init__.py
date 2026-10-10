@@ -10,7 +10,7 @@ from fewhumans.judges.base import Judge, JudgeOutput
 from fewhumans.judges.fake import FakeJudge
 from fewhumans.judges.python_judge import PythonJudge
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 __all__ = [
     "Binary",

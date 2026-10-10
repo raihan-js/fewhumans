@@ -1,6 +1,6 @@
 [project]
 name = "fewhumans"
-version = "0.1.0"
+version = "1.0.0"
 description = "Few humans, valid estimates: combine few human labels with many LLM-judge labels (PPI, active inference, anytime-valid stopping)"
 requires-python = ">=3.10"
 readme = "README.md"

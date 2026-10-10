@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+title: FewHumans
+message: If you use this software, please cite it as below.
+authors:
+  - family-names: Sikder
+    given-names: Akteruzzaman Raihan
+repository-code: https://github.com/raihan-js/fewhumans
+license: Apache-2.0
+version: 1.0.0

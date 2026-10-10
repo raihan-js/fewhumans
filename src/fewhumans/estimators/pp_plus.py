@@ -22,14 +22,15 @@ Validity of the interval is NOT claimed here — the Phase 4 coverage gate decid
 from __future__ import annotations
 
 import numpy as np
+import numpy.typing as npt
 
 from fewhumans.estimators.classical import EstimateResult, _t
 
 
 def power_tuned_lambda(
-    y_human: list[float] | np.ndarray,
-    pred_human: list[float] | np.ndarray,
-    pred_unlabeled: list[float] | np.ndarray,
+    y_human: list[float] | npt.NDArray[np.float64],
+    pred_human: list[float] | npt.NDArray[np.float64],
+    pred_unlabeled: list[float] | npt.NDArray[np.float64],
 ) -> float:
     """PPI++ power-tuning parameter λ̂ ∈ [0, 1] (ppi_py `_calc_lam_glm`, scalar).
 
@@ -60,9 +61,9 @@ def power_tuned_lambda(
 
 
 def ppi_plus_mean(
-    pred_unlabeled: list[float] | np.ndarray,
-    y_human: list[float] | np.ndarray,
-    pred_human: list[float] | np.ndarray,
+    pred_unlabeled: list[float] | npt.NDArray[np.float64],
+    y_human: list[float] | npt.NDArray[np.float64],
+    pred_human: list[float] | npt.NDArray[np.float64],
     confidence: float = 0.95,
     lam: float | None = None,
 ) -> EstimateResult:

@@ -17,6 +17,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 
 RoutingCtx = dict[str, Any]
 FLOOR_FRAC = 0.1
@@ -179,7 +180,7 @@ class Disagreement:
 Active = Disagreement
 
 
-def _sigmoid(z: np.ndarray) -> np.ndarray:
+def _sigmoid(z: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
     return np.asarray(1.0 / (1.0 + np.exp(-np.clip(z, -30.0, 30.0))))
 
 
@@ -201,11 +202,11 @@ class LearnedError:
     lr: float = 0.5
     iters: int = 500
     id: str = "R4"
-    coef_: np.ndarray = field(default_factory=lambda: np.zeros(3), repr=False)
+    coef_: npt.NDArray[np.float64] = field(default_factory=lambda: np.zeros(3), repr=False)
 
     fitted_: bool = field(default=False, repr=False)
 
-    def _design(self, feats: list[dict[str, float]]) -> np.ndarray:
+    def _design(self, feats: list[dict[str, float]]) -> npt.NDArray[np.float64]:
         x = np.array([[1.0, float(f.get("disagreement", 0.0)), float(f.get("uncertainty", 0.5))] for f in feats])
         s = x[:, 1:].std(axis=0)
         s[s == 0] = 1.0

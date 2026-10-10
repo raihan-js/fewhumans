@@ -21,6 +21,7 @@ experimental=True until the Phase 4 gate validates them.
 from __future__ import annotations
 
 import numpy as np
+import numpy.typing as npt
 
 from fewhumans.estimators.classical import EstimateResult
 
@@ -33,7 +34,7 @@ def cs_radius(t: int, alpha: float) -> float:
 
 
 def cs_human_only(
-    values: list[float] | np.ndarray,
+    values: list[float] | npt.NDArray[np.float64],
     confidence: float = 0.95,
     lo: float = 0.0,
     hi: float = 1.0,

@@ -19,7 +19,7 @@ from typing import Any
 
 import numpy as np
 
-from fewhumans.estimators.classical import EstimateResult, _z
+from fewhumans.estimators.classical import EstimateResult, _t
 from fewhumans.estimators.pp_plus import power_tuned_lambda
 
 
@@ -106,7 +106,7 @@ def stratified_ppi_plus(
         var += w_h**2 * v_h
         n_human += len(lab_h)
         details[h] = {"n": len(ids_h), "n_human": len(lab_h), "lambda": lam}
-    hw = _z(confidence) * float(np.sqrt(max(var, 0.0)))
+    hw = _t(n_human - len(strata), confidence) * float(np.sqrt(max(var, 0.0)))
     return EstimateResult(theta, hw, theta - hw, theta + hw, n_human,
                           "E4-stratified-ppi-plus", confidence, False,
                           f"strata={details}")

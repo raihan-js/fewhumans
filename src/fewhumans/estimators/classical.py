@@ -49,6 +49,12 @@ def _z(confidence: float) -> float:
     return float(stats.norm.ppf(0.5 + confidence / 2.0))
 
 
+def _t(df: int, confidence: float) -> float:
+    """Student-t quantile (df≥1); falls back to normal when df is large."""
+    df = max(int(df), 1)
+    return float(stats.t.ppf(0.5 + confidence / 2.0, df))
+
+
 def judge_only(values: list[float], confidence: float = 0.95) -> EstimateResult:
     """E0: estimand computed on panel (judge) labels with a naive CLT interval.
 
@@ -60,7 +66,7 @@ def judge_only(values: list[float], confidence: float = 0.95) -> EstimateResult:
     n = len(arr)
     mean = float(arr.mean()) if n else float("nan")
     se = float(arr.std(ddof=1) / np.sqrt(n)) if n > 1 else float("nan")
-    hw = _z(confidence) * se if n > 1 else float("nan")
+    hw = _t(n - 1, confidence) * se if n > 1 else float("nan")
     return EstimateResult(mean, hw, mean - hw, mean + hw, 0, "E0-judge-only",
                           confidence, False, "covers the judge mean, NOT the truth")
 
@@ -77,7 +83,7 @@ def human_only(values: list[float], confidence: float = 0.95) -> EstimateResult:
     n = len(arr)
     mean = float(arr.mean()) if n else float("nan")
     se = float(arr.std(ddof=1) / np.sqrt(n)) if n > 1 else float("nan")
-    hw = _z(confidence) * se if n > 1 else float("nan")
+    hw = _t(n - 1, confidence) * se if n > 1 else float("nan")
     return EstimateResult(mean, hw, mean - hw, mean + hw, n, "E1-human-only",
                           confidence, False, "")
 

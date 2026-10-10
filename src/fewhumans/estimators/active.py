@@ -26,7 +26,7 @@ from collections.abc import Mapping
 
 import numpy as np
 
-from fewhumans.estimators.classical import EstimateResult, _z
+from fewhumans.estimators.classical import EstimateResult, _t
 
 
 def active_mean(
@@ -59,6 +59,6 @@ def active_mean(
     arr = np.array(deltas)
     theta = float(arr.mean())
     var = float(arr.var(ddof=1) / n_total) if n_total > 1 else float("nan")
-    hw = _z(confidence) * float(np.sqrt(max(var, 0.0)))
+    hw = _t(len(y_human) - 1, confidence) * float(np.sqrt(max(var, 0.0)))
     return EstimateResult(theta, hw, theta - hw, theta + hw, len(y_human),
                           "E5-active", confidence, False, "")

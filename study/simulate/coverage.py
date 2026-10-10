@@ -50,6 +50,18 @@ CONF = 0.95
 FLOOR_FRAC = 0.1
 BUDGET_REF = 400  # reference budget for the Poisson floor
 
+# Known value bounds per task for the anytime-valid CS (fixed pools: the
+# min/max below come from the task definition or the full human array).
+TASK_BOUNDS = {
+    "helpsteer2-correctness": (0.0, 4.0),
+    "summeval-consistency": (1.0, 5.0),
+    "mtbench-winrate": (0.0, 1.0),
+    "arena-winrate": (0.0, 1.0),
+    "wmt-mqm": None,  # set from the full-human range at runtime
+    "toxicity-flag": (0.0, 1.0),
+    "oraclebench-truth": (0.0, 1.0),
+}
+
 
 def load_task(task: str) -> dict[str, np.ndarray | list[str]]:
     """Hidden truth + panel predictions from the judgebank (simulator-owned)."""
@@ -188,9 +200,12 @@ def run_config(task_name: str, method: str, n: int, R: int, seed: int) -> dict:
 
 def target_hw(task_name: str) -> float:
     """Stopping target: half-width of an E1 n=400 sample (analytic, documented)."""
+    from scipy import stats as _stats
+
     task = load_task(task_name)
     y = task["y"]
-    return float(1.959963984540054 * y.std(ddof=1) / np.sqrt(400))
+    t = float(_stats.t.ppf(0.975, 399))
+    return float(t * y.std(ddof=1) / np.sqrt(400))
 
 
 def run_sequential(task_name: str, R: int, seed: int, mode: str) -> dict:
@@ -202,6 +217,7 @@ def run_sequential(task_name: str, R: int, seed: int, mode: str) -> dict:
     task = load_task(task_name)
     truth = float(task["y"].mean())
     target = target_hw(task_name)
+    lo_b, hi_b = TASK_BOUNDS[task_name] or (float(task["y"].min()), float(task["y"].max()))
     rng = np.random.default_rng(seed)
     covers, stops = 0, []
     cap = min(800, len(task["y"]))
@@ -211,7 +227,7 @@ def run_sequential(task_name: str, R: int, seed: int, mode: str) -> dict:
         for t in range(10, cap + 1):
             idx = order[:t]
             if mode == "seq":
-                r = cs_human_only(list(task["y"][idx]))
+                r = cs_human_only(list(task["y"][idx]), lo=lo_b, hi=hi_b)
             else:
                 r = ppi_mean(list(task["f"]), list(task["y"][idx]), list(task["f"][idx]))
             if r.halfwidth <= target:
@@ -219,7 +235,7 @@ def run_sequential(task_name: str, R: int, seed: int, mode: str) -> dict:
                 break
         if stopped is None:
             idx = order[:cap]
-            r = cs_human_only(list(task["y"][idx])) if mode == "seq" else ppi_mean(
+            r = cs_human_only(list(task["y"][idx]), lo=lo_b, hi=hi_b) if mode == "seq" else ppi_mean(
                 list(task["f"]), list(task["y"][idx]), list(task["f"][idx]))
             stopped = (cap, r.lo <= truth <= r.hi)
         stops.append(stopped[0])

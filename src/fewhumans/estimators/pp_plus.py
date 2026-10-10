@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from fewhumans.estimators.classical import EstimateResult, _z
+from fewhumans.estimators.classical import EstimateResult, _t
 
 
 def power_tuned_lambda(
@@ -86,7 +86,10 @@ def ppi_plus_mean(
     lam = float(np.clip(lam, 0.0, 1.0))
     theta = float(lam * f_unl.mean() + (y - lam * f_lab).mean())
     se = float(np.sqrt(f_unl.var() * lam**2 / n_unl + (y - lam * f_lab).var() / n))
-    hw = _z(confidence) * se
+    # NOTE: ppi_py uses the normal quantile here; we use Student-t (df = n−1)
+    # for better small-sample coverage. Point and λ match ppi_py exactly; the
+    # half-width differs by the analytic factor t/z (tested).
+    hw = _t(n - 1, confidence) * se
     note = f"lambda={lam:.4f} ({'tuned' if tuned else 'fixed'})"
     return EstimateResult(theta, hw, theta - hw, theta + hw, n, "E3-ppi-plus",
                           confidence, False, note)

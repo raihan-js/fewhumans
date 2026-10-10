@@ -1,0 +1,1 @@
+{"task": "arena-winrate", "method": "E5+R5", "n": 50, "R": 2000, "coverage": 0.9525, "mcse": 0.00475624589355933, "mean_hw": 0.1321769963619896, "mean_n": 50.7905, "infeasible": 0}

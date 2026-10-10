@@ -1,0 +1,1 @@
+{"task": "wmt-mqm", "method": "E1+R0", "n": 200, "R": 2000, "coverage": 0.965, "mcse": 0.00410944035119139, "mean_hw": 0.4136958012970358, "mean_n": 200.0, "infeasible": 0}

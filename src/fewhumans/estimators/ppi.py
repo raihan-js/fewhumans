@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from fewhumans.estimators.classical import EstimateResult, _z
+from fewhumans.estimators.classical import EstimateResult, _t
 
 
 def ppi_mean(
@@ -40,6 +40,6 @@ def ppi_mean(
     rectifier = y - f_lab
     theta = float(f_all.mean() + rectifier.mean())
     var = float(f_all.var(ddof=1) / n_all + rectifier.var(ddof=1) / n)
-    hw = _z(confidence) * float(np.sqrt(max(var, 0.0)))
+    hw = _t(n - 1, confidence) * float(np.sqrt(max(var, 0.0)))
     return EstimateResult(theta, hw, theta - hw, theta + hw, n, "E2-ppi",
                           confidence, False, "")

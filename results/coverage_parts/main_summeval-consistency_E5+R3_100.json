@@ -1,0 +1,1 @@
+{"task": "summeval-consistency", "method": "E5+R3", "n": 100, "R": 2000, "coverage": 0.997, "mcse": 0.0012229063741758816, "mean_hw": 0.377091922657042, "mean_n": 80.0475, "infeasible": 0}

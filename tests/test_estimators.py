@@ -1,7 +1,14 @@
 """Hand-computed estimator checks + properties (spec §6.3)."""
 
+import math
+
+from scipy import stats
 
 from fewhumans.estimators import human_only, judge_only, ppi_mean
+
+
+def _t(df: int, conf: float = 0.95) -> float:
+    return float(stats.t.ppf(0.5 + conf / 2.0, df))
 
 
 def test_judge_only_hand_computed():
@@ -9,8 +16,8 @@ def test_judge_only_hand_computed():
     assert r.value == 0.75
     assert r.n_human == 0
     assert "NOT the truth" in r.note
-    # std(ddof=1)=0.5, se=0.25, z=1.96
-    assert abs(r.halfwidth - 1.959963984540054 * 0.25) < 1e-9
+    # std(ddof=1)=0.5, se=0.25, Student-t df=3
+    assert abs(r.halfwidth - _t(3) * 0.25) < 1e-9
 
 
 def test_human_only_hand_computed():
@@ -18,6 +25,8 @@ def test_human_only_hand_computed():
     assert r.value == 0.6
     assert r.method == "E1-human-only"
     assert r.lo < r.value < r.hi
+    # var(ddof=1)=0.3, se=sqrt(0.3/5), Student-t df=4
+    assert abs(r.halfwidth - _t(4) * math.sqrt(0.3 / 5)) < 1e-9
 
 
 def test_ppi_hand_computed():

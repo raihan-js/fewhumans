@@ -1,4 +1,9 @@
 """Example scripts stay working (tiny runs)."""
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from examples.pairwise_winrate import main as pairwise_main
 from examples.quickstart_accuracy import main as quickstart_main
 

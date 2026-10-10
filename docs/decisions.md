@@ -2,8 +2,7 @@
 
  append-only, newest first.
 
-## 2026-10-10 — Phase 5 pre-registered (BEFORE main study)
-- Analysis code frozen at `2b8090e`; preregistration frozen at `2ee2c93`
+## 2026-10-10 — Phase 5 pre-registered (BEFORE main study)- Analysis code frozen at `2b8090e`; preregistration frozen at `2ee2c93`
   (hash self-recorded in follow-up `8f5a524`). Targets w, grid, censoring rule,
   hypotheses H1–H5, cost assumptions ($0.30/label [$0.10, $1.00]) all frozen.
 - Adaptation logged: n_ref = min(400, N//2) for small pools (summeval N=100,

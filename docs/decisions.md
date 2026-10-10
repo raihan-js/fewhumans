@@ -2,7 +2,16 @@
 
  append-only, newest first.
 
-## 2026-10-10 — Phase 5 pre-registered (BEFORE main study)- Analysis code frozen at `2b8090e`; preregistration frozen at `2ee2c93`
+## 2026-10-10 — Phase 7 dogfood (results/dogfood.json)
+- OracleBench pointwise false-accept: published 147/1333 = 11.03% reproduced
+  exactly from raw files; FewHumans n=100: E1 13.0% [6.3,19.7], E2 12.6%,
+  E3 13.0% — all cover. No README correction needed.
+- OracleBench pairwise picks-right: published 379/471 = 80.47% reproduced;
+  n=100: E1 71.0% [62.0,80.0] MISSES on this seed, E2/E3 cover — PPI saved
+  the draw (illustration, seed 7, not a claim).
+- FedProc-Ledger deferred: no per-item judge verdicts published; gold is
+  model-consensus. Queued for the VETR reviewer-gold round (needs joinable
+  IDs + human gold).- Analysis code frozen at `2b8090e`; preregistration frozen at `2ee2c93`
   (hash self-recorded in follow-up `8f5a524`). Targets w, grid, censoring rule,
   hypotheses H1–H5, cost assumptions ($0.30/label [$0.10, $1.00]) all frozen.
 - Adaptation logged: n_ref = min(400, N//2) for small pools (summeval N=100,

@@ -1,1 +1,1 @@
-{"task": "oraclebench-truth", "method": "E5+R0", "n": 100, "R": 2000, "coverage": 0.9735, "mcse": 0.00359150038284837, "mean_hw": 0.0824177922613113, "mean_n": 100.0, "infeasible": 0}
+{"task": "oraclebench-truth", "method": "E5+R0", "n": 100, "R": 2000, "coverage": 0.9755, "mcse": 0.0034568591235397466, "mean_hw": 0.08343764569510626, "mean_n": 100.0, "infeasible": 0}

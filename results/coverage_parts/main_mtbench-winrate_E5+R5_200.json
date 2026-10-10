@@ -1,1 +1,1 @@
-{"task": "mtbench-winrate", "method": "E5+R5", "n": 200, "R": 2000, "coverage": 0.993, "mcse": 0.0018642692938521525, "mean_hw": 0.0506433310719752, "mean_n": 199.7745, "infeasible": 0}
+{"task": "mtbench-winrate", "method": "E5+R5", "n": 200, "R": 2000, "coverage": 0.9945, "mcse": 0.0016537457482938467, "mean_hw": 0.05095397269746774, "mean_n": 199.7745, "infeasible": 0}

@@ -1,0 +1,1 @@
+{"task": "wmt-mqm", "mode": "seq", "R": 2000, "target_hw": 0.2947112697253833, "coverage": 1.0, "mcse": 0.0, "mean_stop_n": 800.0}

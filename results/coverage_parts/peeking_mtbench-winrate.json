@@ -1,0 +1,1 @@
+{"task": "mtbench-winrate", "mode": "peek", "R": 2000, "target_hw": 0.031404083661313156, "coverage": 1.0, "mcse": 0.0, "mean_stop_n": 318.0}

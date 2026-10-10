@@ -1,1 +1,1 @@
-{"task": "wmt-mqm", "method": "E5+R3", "n": 400, "R": 2000, "coverage": 0.9405, "mcse": 0.005289600646551685, "mean_hw": 16.673691561673085, "mean_n": 293.5935, "infeasible": 0}
+{"task": "wmt-mqm", "method": "E5+R3", "n": 400, "R": 2000, "coverage": 0.9415, "mcse": 0.0052477495176503994, "mean_hw": 16.74294457043375, "mean_n": 293.5935, "infeasible": 0}

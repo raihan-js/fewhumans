@@ -28,6 +28,19 @@
 - A1 running in background: study/run_judges/run_all_local.sh (8 tasks × 2
   judges, ~10k judgments, log study/run_judges/runs.log).
 
+## 2026-10-10 — Phase 4 gate (R=2,000; report results/coverage_report.md)
+- Round 1 (z-intervals): 15 fails. Fix: Student-t everywhere (df=n−1;
+  E4: n−strata) — cleared 5 borderline n=50s. E3 still ppi_py-exact (point+λ;
+  width differs by analytic t/z, tested).
+- Round 2: 10 fails. E4+R1 n=50 excluded from defaults (needs n≥100);
+  wmt-skew ranges (E1/E2 n≥100, E3/E4 n≥200, E5 all-n); E5+R3 tox-n100
+  CONFIRMED at R=8,000 (0.9378±0.0027, IPW heavy tails) — E5+R3 stays in the
+  study (H2 needs it) but the default E5 routing is R0/R5, with the corner
+  listed in the report, not hidden.
+- E6-seq covers 100% everywhere but stops late (conservative union bound).
+- F2 (peeking): 0–1.3pp inflation at these (late-stopping) targets.
+- Stress S1/S2/S3 all pass (PPI never uses judge confidence).
+
 ## 2026-10-10 — A2 launched (key in project .env, verified)
 - Owner put OPENAI_API_KEY in fewhumans/.env (gitignored, spec-compliant).
   Empty ~/.config stub removed. run_api.py reads .env first, key-file fallback.

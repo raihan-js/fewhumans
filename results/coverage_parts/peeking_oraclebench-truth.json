@@ -1,0 +1,1 @@
+{"task": "oraclebench-truth", "mode": "peek", "R": 2000, "target_hw": 0.041001167622881377, "coverage": 0.987, "mcse": 0.0025328837320335107, "mean_stop_n": 747.9675}

@@ -1,1 +1,1 @@
-{"task": "toxicity-flag", "method": "E3+R0", "n": 200, "R": 2000, "coverage": 0.9795, "mcse": 0.0031685761786644775, "mean_hw": 0.061694600900441085, "mean_n": 200.0, "infeasible": 0}
+{"task": "toxicity-flag", "method": "E3+R0", "n": 200, "R": 2000, "coverage": 0.98, "mcse": 0.003130495168499707, "mean_hw": 0.06207209568658208, "mean_n": 200.0, "infeasible": 0}

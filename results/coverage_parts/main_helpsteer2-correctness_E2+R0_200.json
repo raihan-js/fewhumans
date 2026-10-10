@@ -1,1 +1,1 @@
-{"task": "helpsteer2-correctness", "method": "E2+R0", "n": 200, "R": 2000, "coverage": 0.9845, "mcse": 0.0027622228367747558, "mean_hw": 0.19105314720199917, "mean_n": 200.0, "infeasible": 0}
+{"task": "helpsteer2-correctness", "method": "E2+R0", "n": 200, "R": 2000, "coverage": 0.9855, "mcse": 0.00267298989897081, "mean_hw": 0.19222215657870242, "mean_n": 200.0, "infeasible": 0}

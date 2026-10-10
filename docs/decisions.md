@@ -2,8 +2,21 @@
 
  append-only, newest first.
 
-## 2026-10-10 — Phase 8 ship status
-- GitHub LIVE + CI green (fixed: newer-numpy mypy strictness on bare
+## 2026-10-10 — PyPI LIVE via Trusted Publishing (1.0.0)
+- 4× 403 with API tokens (2 clients, 3 tokens) was never diagnosed to root
+  cause; prime suspect is chat-exposure auto-revocation (both tokens were
+  pasted in chat), not scope/email/client (all verified). Lesson: tokens go
+  terminal-only, never chat.
+- Trusted Publishing (owner-linked GitHub, pending publisher for `fewhumans`,
+  `.github/workflows/publish.yml`) worked first try — after one real bug of
+  ours: PyPI rejects direct (git-URL) deps, so the `ppi` extra is empty with
+  a manual-install note (v1.0.0 retagged). Verified: JSON API live, both
+  files, `pip install fewhumans` imports OK.
+- Future releases: push `vX.Y.Z` tags (no tokens). Owner should DELETE both
+  chat-exposed API tokens.
+- OPEN: paper PDF (needs texlive via owner sudo) + arXiv submission (owner).
+
+## 2026-10-10 — Phase 8 ship status- GitHub LIVE + CI green (fixed: newer-numpy mypy strictness on bare
   `np.ndarray` → `npt.NDArray[np.float64]`; lesson: CI installs latest deps,
   local passed on older stubs).
 - JudgeBank LIVE (8 parquets + card); 2.8MB release tracked in git

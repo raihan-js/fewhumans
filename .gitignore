@@ -12,3 +12,4 @@ dist/
 build/
 study/run_judges/runs.log
 study/run_judges/runs-api.log
+results/study_parts/

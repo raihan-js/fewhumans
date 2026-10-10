@@ -17,8 +17,7 @@ def load(name: str) -> dict:
 def main() -> None:
     cov = load("coverage.json")
     fails = load("coverage_failures.json")
-    summ = json.load(open("results/study_summary.json"))
-    cp3 = load("checkpoint3.json")
+    summ = load("study_summary.json")
     dog = load("dogfood.json")
 
     o = []

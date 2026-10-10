@@ -178,7 +178,8 @@ def load_oraclebench(n: int = 800, seed: int = 0) -> list[dict[str, Any]]:
     p = hf_hub_download("raihan-js/oraclebench-items", "items.jsonl", repo_type="dataset")
     import json
 
-    all_rows = [json.loads(line) for line in open(p) if line.strip()]
+    with open(p) as f:
+        all_rows = [json.loads(line) for line in f if line.strip()]
     rng = np.random.default_rng(seed)
     idx = rng.choice(len(all_rows), min(n, len(all_rows)), replace=False)
     rows = []

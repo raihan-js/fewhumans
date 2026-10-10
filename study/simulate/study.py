@@ -31,8 +31,8 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "analyze"))
 sys.path.insert(0, str(Path(__file__).parents[2] / "src"))
+import coverage as gate
 from checkpoint3 import TASK_KIND, map_judge
-
 from fewhumans.estimators import (
     active_mean,
     human_only,
@@ -41,8 +41,6 @@ from fewhumans.estimators import (
     ppi_plus_mean,
     stratified_ppi_plus,
 )
-
-import coverage as gate
 
 GRID = [25, 50, 75, 100, 150, 200, 300, 400, 600]
 PANELS = ["full", "best", "cheap"]

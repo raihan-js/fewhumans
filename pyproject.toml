@@ -23,9 +23,12 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8", "hypothesis>=6.0", "ruff>=0.4", "mypy>=1.0"]
 docs = ["mkdocs-material>=9.0"]
-# ppi_py reference implementation (github.com/aangelopoulos/ppi_py) is a Phase-2
-# cross-check dependency; not on PyPI, installed from git (verified 2026-10-10).
-ppi = ["ppi_py @ git+https://github.com/aangelopoulos/ppi_py"]
+# ppi_py reference implementation (github.com/aangelopoulos/ppi_py) is a
+# cross-check dependency. It is NOT on PyPI, and PyPI forbids direct (git URL)
+# dependencies, so install it manually for cross-checks:
+#   pip install "git+https://github.com/aangelopoulos/ppi_py"
+# (verified 2026-10-10; tests skip without it via importorskip).
+ppi = []
 
 [tool.setuptools.packages.find]
 where = ["src"]

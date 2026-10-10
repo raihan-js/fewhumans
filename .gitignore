@@ -1,5 +1,7 @@
-# local data and secrets — never commit
-data/
+# local data and secrets — never commit (exception: curated release below)
+data/*
+!data/release/
+!data/release/**
 .env
 mlruns/
 *.parquet

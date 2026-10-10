@@ -1,15 +1,14 @@
 # FewHumans study — judge price table (EDITABLE; never hard-code in docs).
-# ALL prices VERIFY-AT-BUILD against provider pages. Estimates below use
-# 2026-10-10 public knowledge and are marked ESTIMATE — not facts.
-# See docs/phase3_plan.md for the spend table derived from these.
+# VERIFIED 2026-10-10 against https://platform.openai.com/docs/pricing
+# (Standard tier). Re-verify if a run happens much later.
 
 per_1k_in:
-  api-fast: 0.00015    # ESTIMATE, gpt-4o-mini-class
-  api-strong-subset: 0.003  # ESTIMATE, frontier-mini-class
+  gpt-4o-mini: 0.00015
+  gpt-4.1-mini: 0.00040
 
 per_1k_out:
-  api-fast: 0.00060    # ESTIMATE
-  api-strong-subset: 0.012  # ESTIMATE
+  gpt-4o-mini: 0.00060
+  gpt-4.1-mini: 0.00160
 
 assumed_tokens_per_judgment:
   in: 1500

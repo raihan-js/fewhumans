@@ -78,7 +78,8 @@ JUDGES = {
 async def main_async(args: argparse.Namespace) -> None:
     rows = LOADERS[args.task](n=args.n, seed=args.seed)
     cfg = JUDGES[args.judge]
-    runner = Runner(PriceTable(), cache_dir="data/cache/judges", concurrency=4)
+    prices = getattr(args, "prices", None) or PriceTable()
+    runner = Runner(prices, cache_dir="data/cache/judges", concurrency=4)
     prompts = [build_prompt(r) for r in rows]
     calls = await runner.run_all(cfg, [(r["item_id"], p) for r, (p, _) in zip(rows, prompts)], max_cost_usd=args.max_cost)
     out_rows = []

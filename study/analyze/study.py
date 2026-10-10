@@ -9,7 +9,10 @@ from __future__ import annotations
 
 import glob
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, "study/analyze")
 
 import matplotlib
 
@@ -17,6 +20,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from checkpoint3 import TASK_KIND, map_judge
 
 W = {  # frozen targets = analytic E1 half-width at n_ref (see preregistration)
     "helpsteer2-correctness": 0.1217,
@@ -67,8 +71,8 @@ def savings_bootstrap(task_curves: dict, key: str, base: str, w: float, B: int =
     ratios = []
     for _ in range(B):
         idx = rng.integers(0, R, R)
-        def boot_hw(k: str, n: int) -> float:  # noqa: ANN202
-            h = np.array(task_curves[k][n]["hws"])[idx]
+        def boot_hw(k: str, n: int, _idx: np.ndarray = idx) -> float:
+            h = np.array(task_curves[k][n]["hws"])[_idx]
             return float(h.mean())
         ns_k = np.array(sorted(task_curves[key]))
         ns_b = np.array(sorted(task_curves[base]))
@@ -97,11 +101,6 @@ def dl_pool(ests: list[float], ses: list[float]) -> dict:
 
 def task_props() -> dict:
     """Routing-help analysis inputs: AUROC(dis→wrong), agreement, imbalance."""
-    from checkpoint3 import TASK_KIND
-
-    import sys
-
-    sys.path.insert(0, "study/analyze")
     props = {}
     for task, kind in TASK_KIND.items():
         if task == "fedproc-roles":
@@ -113,8 +112,6 @@ def task_props() -> dict:
         base = dfs.get("9b", next(iter(dfs.values())))
         y = base["human"].to_numpy(dtype=float)
         # Panel (mean of mapped judges across files).
-        from checkpoint3 import map_judge
-
         F = np.mean([[map_judge(kind, None, v) or 0.0 for v in dfs[j]["judge"]] for j in dfs], axis=0)
         wrong = (np.abs(F - y) > (0.26 if kind in ("binary", "pairwise") else 0.5 * (y.std() or 1))).astype(float)
         # Disagreement proxy: std across judges' mapped values.
@@ -135,8 +132,6 @@ def task_props() -> dict:
 
 def calibration() -> dict:
     """ECE + reliability bins per judge per task (verbalized confidence)."""
-    from checkpoint3 import TASK_KIND, map_judge
-
     out = {}
     for task, kind in TASK_KIND.items():
         if task == "fedproc-roles":

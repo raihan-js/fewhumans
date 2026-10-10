@@ -1,0 +1,53 @@
+[project]
+name = "fewhumans"
+version = "0.1.0"
+description = "Few humans, valid estimates: combine few human labels with many LLM-judge labels (PPI, active inference, anytime-valid stopping)"
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "pandas>=2.0",
+  "pyarrow>=14.0",
+  "pydantic>=2.0",
+  "typer>=0.9",
+  "rich>=13.0",
+  "httpx>=0.27",
+  "tenacity>=8.0",
+  "matplotlib>=3.8",
+  "openai>=1.0",
+  "anthropic>=0.40",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "hypothesis>=6.0", "ruff>=0.4", "mypy>=1.0"]
+docs = ["mkdocs-material>=9.0"]
+# ppi_py reference implementation (github.com/aangelopoulos/ppi_py) is a Phase-2
+# cross-check dependency; package name on PyPI to be verified before pinning.
+ppi = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+fewhumans = "fewhumans.cli.main:main"
+fh-study = "fewhumans.cli.study:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+ignore = ["B008"]  # typer.Option() in defaults is standard Typer usage
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+
+[tool.mkdocs]
+site_name = "FewHumans"

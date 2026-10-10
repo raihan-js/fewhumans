@@ -1,0 +1,12 @@
+# local data and secrets — never commit
+data/
+.env
+mlruns/
+*.parquet
+__pycache__/
+.venv/
+.uv/
+runs/
+*.egg-info/
+dist/
+build/

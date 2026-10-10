@@ -2,6 +2,32 @@
 
  append-only, newest first.
 
+## 2026-10-10 — A1 local runs launched (approvals A1/A2-fast-only/A3 as-is)
+- Owner approvals: A1 full local ($0), A2 fast API judge only (cap $10, key
+  handoff pending), A3 task/panel list as planned. Strong-model subset dropped.
+- Deps added to venv (free, no spend; study code needs them): `datasets`,
+  `huggingface_hub` (loaders), `ppi_py` from git (cross-check only).
+- Transport finding: Ollama's OpenAI-compatible endpoint ignores think=false —
+  qwen3.5 fills context with thinking and returns EMPTY content (100% ABSTAIN
+  that way). Runner gained a native `ollama` provider (/api/chat, think=false).
+  Verified live: 50-item pilot 0% abstain, MAE 0.68 (0-4), p50 3.1s/item.
+- Pilot quality notes: verbalized confidence 0.9-1.0 (overconfident; Phase 5
+  calibration analysis will show it); categorical labels get SHORTENED by the
+  model ('INCORPORATED' for 'INCORPORATED_BY_REFERENCE') — analysis must
+  canonicalize (exact→prefix), prompt says EXACTLY; judge leans high (31/50 = 4).
+- Prompt freeze v1 (hashed, never tuned against humans): ordinal v1-846b8229,
+  pairwise v1-d920d6ef, binary v1-94371404, categorical v1-6b681adb,
+  real v1-00b844bf.
+- Task pins: arena subsample 800/55k (seed 0); toxicity = google/civil_comments
+  CC0, balanced ~50/50; wmt-mqm = Online-W en-de only system in mirror (2,371
+  segs → 500); mtbench alpaca-vs-gpt3.5 pair = 318 rows; fedproc gold =
+  local labeled_mentions.parquet (2,663 audit labels) + HF mentions.parquet
+  context; oracle = HF items.jsonl (oracle_verdict truth).
+- Panel deviation (logged in judges.yaml): on-disk qwen3.5:9b/4b instead of
+  Qwen2.5-7B/Llama-3.1-8B (no download, known-good serving).
+- A1 running in background: study/run_judges/run_all_local.sh (8 tasks × 2
+  judges, ~10k judgments, log study/run_judges/runs.log).
+
 ## 2026-10-10 — Phase 2 (estimators + routing)
 - E3 mirrors `ppi_py` (`ppi.ppi_mean_pointestimate`/`ppi_mean_ci`, installed from
   git for cross-check only) to machine precision (worst diff 2.2e-16 over 20

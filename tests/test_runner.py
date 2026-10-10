@@ -89,3 +89,25 @@ def test_self_consistency_majority(tmp_path):
     c = asyncio.run(runner.judge_one(cfg, "i1", "prompt", 5.0))
     assert c.label == "a" and abs(c.confidence - 2 / 3) < 1e-12 and len(c.samples) == 3
     assert json.loads(c.raw)["label"] == "a"
+
+
+def test_ollama_native_transport_think_false(tmp_path):
+    seen = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen["url"] = str(request.url)
+        seen["body"] = json.loads(request.content.decode())
+        return httpx.Response(200, json={
+            "message": {"content": "{\"label\": 2, \"confidence\": 0.6}"},
+            "prompt_eval_count": 50,
+            "eval_count": 10,
+        })
+
+    prices = PriceTable()
+    runner = Runner(prices, cache_dir=str(tmp_path),
+                    client=httpx.AsyncClient(transport=httpx.MockTransport(handler), base_url="http://t"))
+    cfg = JudgeConfig(name="j", provider="ollama", model="m", base_url="http://t/v1")
+    c = asyncio.run(runner.judge_one(cfg, "i1", "prompt", 5.0))
+    assert c.label == 2 and c.confidence == 0.6
+    assert seen["url"].endswith("/api/chat") and seen["body"]["think"] is False
+    assert (c.tokens_in, c.tokens_out) == (50, 10)

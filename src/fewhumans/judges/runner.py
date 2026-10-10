@@ -31,10 +31,11 @@ class CostCapExceeded(RuntimeError):
 
 class JudgeConfig(BaseModel):
     name: str
-    provider: str = "openai_compatible"  # or "anthropic"
+    provider: str = "openai_compatible"  # openai_compatible | anthropic | ollama
     model: str = ""
     base_url: str = "http://localhost:11434/v1"
     api_key: str = ""
+    think: bool = False  # ollama native only: disable thinking (JSON mode needs it)
     prompt_template: str = "Rate the following. Reply with JSON {\"label\": ..., \"confidence\": ...}."
     temperature: float = 0.0
     confidence: str = "verbalized"  # verbalized | logprob | self_consistency
@@ -129,6 +130,29 @@ class Runner:
         usage = body.get("usage", {})
         return text, int(usage.get("prompt_tokens", 0)), int(usage.get("completion_tokens", 0))
 
+    async def _complete_ollama(self, cfg: JudgeConfig, prompt: str, temperature: float) -> tuple[str, int, int]:
+        """Native /api/chat transport. Needed because the OpenAI-compatible
+        endpoint ignores think=false and reasoning models return empty content."""
+        base = cfg.base_url.rstrip("/v1").rstrip("/")
+        payload: dict[str, Any] = {
+            "model": cfg.model,
+            "messages": [{"role": "user", "content": prompt}],
+            "think": cfg.think,
+            "stream": False,
+            "options": {"temperature": temperature, "num_predict": cfg.max_tokens},
+        }
+        r = await self._post(f"{base}/api/chat", {"Content-Type": "application/json"}, payload)
+        body = r.json()
+        text = body.get("message", {}).get("content", "") or ""
+        return text, int(body.get("prompt_eval_count", 0)), int(body.get("eval_count", 0))
+
+    async def _complete(self, cfg: JudgeConfig, prompt: str, temperature: float) -> tuple[str, int, int]:
+        if cfg.provider == "anthropic":
+            return await self._complete_anthropic(cfg, prompt, temperature)
+        if cfg.provider == "ollama":
+            return await self._complete_ollama(cfg, prompt, temperature)
+        return await self._complete_openai(cfg, prompt, temperature)
+
     async def _complete_anthropic(self, cfg: JudgeConfig, prompt: str, temperature: float) -> tuple[str, int, int]:
         payload: dict[str, Any] = {
             "model": cfg.model,
@@ -160,10 +184,7 @@ class Runner:
             texts: list[str] = []
             tin = tout = 0
             for _ in range(k):
-                if cfg.provider == "anthropic":
-                    t, i, o = await self._complete_anthropic(cfg, prompt, temp)
-                else:
-                    t, i, o = await self._complete_openai(cfg, prompt, temp)
+                t, i, o = await self._complete(cfg, prompt, temp)
                 texts.append(t)
                 tin += i
                 tout += o

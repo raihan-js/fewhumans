@@ -15,8 +15,8 @@ tasks:
   - id: mtbench-winrate
     source: lmsys/mt_bench_human_judgments  # VERIFIED, CC-BY-4.0, 3,355 rows
     label_space: pairwise(A/B/tie)
-    estimand: win rate of model A over B (one fixed pair, ties = 0.5)
-    n_items: all rows for the pair (~500)
+    estimand: win rate of alpaca-13b over gpt-3.5-turbo (ties = 0.5)
+    n_items: all rows for the pair (318)
 
   - id: arena-winrate
     source: lmarena-ai/arena-human-preference-55k  # VERIFIED, Apache-2.0
@@ -36,14 +36,13 @@ tasks:
     mirror: RicardoRei/wmt-mqm-human-evaluation  # unofficial; prefer original
     licence: VERIFY-AT-BUILD (check repo)
     label_space: real (MQM score, negative; normalize documented range)
-    estimand: mean MQM score of one system (en-de newstest2021)
-    n_items: ~500 segments
+    estimand: mean MQM score of one system (en-de, Online-W only system in mirror, 2,371 segs)
+    n_items: 500 segments
 
   - id: toxicity-flag
-    source: google/jigsaw_unintended_bias_in_toxicity_classification  # VERIFY-AT-BUILD
-    fallback: a permissive-licence toxicity set (decide at build)
+    source: google/civil_comments  # VERIFIED, CC0, exact Jigsaw replica
     label_space: binary
-    estimand: accuracy of a fixed small classifier (or flag rate)
+    estimand: mean toxicity rate of the slice (balanced ~50/50 by construction)
     n_items: 800
 
   - id: fedproc-roles

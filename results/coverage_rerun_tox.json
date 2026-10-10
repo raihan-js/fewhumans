@@ -1,0 +1,2 @@
+{"note": "R=8000 adjudication of the marginal E5+R3 toxicity n=100 failure (seed 999). Confirmed: true coverage ~0.938, ~1.2pp under nominal. See results/coverage_report.md.",
+ "task": "toxicity-flag", "method": "E5+R3", "n": 100, "R": 8000, "coverage": 0.93775, "mcse": 0.0027012714020438603, "mean_hw": 0.13432736540497847, "mean_n": 112.172125, "infeasible": 0}

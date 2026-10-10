@@ -37,6 +37,19 @@
   per-task rail $3, owner cap $10. A2 running (log runs-api.log), concurrent
   with A1 (network vs GPU, no contention).
 
+## 2026-10-10 — fedproc-roles DROPPED from main study (7 tasks remain)
+- Two independent failures: (1) the "gold" is model-consensus (coding agent +
+  OpenAI judges; explicitly no human experts), so judge-vs-consensus agreement
+  cannot stand in for judge-vs-human; the VETR reviewer gold has not landed.
+  (2) Context join unreliable: gold rows carry no clause number or mention
+  text, doc-only matching shows judges the wrong mention (agreement 3-8%,
+  below the 1/9 chance rate — a data bug, not a judge finding).
+- Parquets kept as weak-truth secondary data; $0.034 API spend sunk. Owner can
+  reinstate if reviewer gold lands with joinable IDs.
+- wmt-mqm scale note (kept): judges rate 0-100, truth is negative MQM. E3/E4/E5
+  are affine-invariant in the predictions (λ absorbs scale/shift), so no
+  re-run; E2 on wmt is scale-sensitive and will be flagged in analysis.
+
 ## 2026-10-10 — Phase 2 (estimators + routing)
 - E3 mirrors `ppi_py` (`ppi.ppi_mean_pointestimate`/`ppi_mean_ci`, installed from
   git for cross-check only) to machine precision (worst diff 2.2e-16 over 20

@@ -1,0 +1,196 @@
+{
+  "arena-winrate": {
+    "local-qwen35-9b": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 3.5591297364999264,
+      "mae": 0.406875,
+      "corr": 0.21552135556478647,
+      "agreement": 0.4475
+    },
+    "api-fast": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0722835,
+      "mean_latency_s": 0.8202713729997413,
+      "mae": 0.340625,
+      "corr": 0.36507735372412614,
+      "agreement": 0.515
+    }
+  },
+  "fedproc-roles": {
+    "local-qwen35-9b": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 2.17234632850068,
+      "agreement": 0.03
+    },
+    "api-fast": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0335655,
+      "mean_latency_s": 0.8178085965000719,
+      "agreement": 0.07875
+    }
+  },
+  "helpsteer2-correctness": {
+    "local-qwen35-4b": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 2.328616060000968,
+      "mae": 1.155,
+      "corr": 0.3064611278683045
+    },
+    "local-qwen35-9b": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 3.326348098499693,
+      "mae": 0.96125,
+      "corr": 0.36373355158065773
+    },
+    "api-fast": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.06727185,
+      "mean_latency_s": 0.8120378509997863,
+      "mae": 0.8375,
+      "corr": 0.4307713207680493
+    }
+  },
+  "mtbench-winrate": {
+    "local-qwen35-4b": {
+      "n": 318,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 1.45671775899973,
+      "mae": 0.38207547169811323,
+      "corr": 0.06045648443542302,
+      "agreement": 0.5
+    },
+    "local-qwen35-9b": {
+      "n": 318,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 2.062804250499994,
+      "mae": 0.3223270440251572,
+      "corr": 0.12672215868668976,
+      "agreement": 0.559748427672956
+    },
+    "api-fast": {
+      "n": 318,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.030710999999999992,
+      "mean_latency_s": 0.8151897395005108,
+      "mae": 0.23427672955974843,
+      "corr": 0.28779674732734295,
+      "agreement": 0.6477987421383647
+    }
+  },
+  "oraclebench-truth": {
+    "local-qwen35-9b": {
+      "n": 800,
+      "abstain_rate": 0.0025,
+      "parsed_rate": 0.9975,
+      "cost_usd": 0.0,
+      "mean_latency_s": 2.7935690694994264,
+      "mae": 0.2518796992481203,
+      "corr": 0.4751359184688216,
+      "agreement": 0.7481203007518797
+    },
+    "api-fast": {
+      "n": 800,
+      "abstain_rate": 0.0025,
+      "parsed_rate": 0.9975,
+      "cost_usd": 0.036203849999999996,
+      "mean_latency_s": 0.8237374049999744,
+      "mae": 0.22932330827067668,
+      "corr": 0.45846949884568516,
+      "agreement": 0.7706766917293233
+    }
+  },
+  "summeval-consistency": {
+    "local-qwen35-4b": {
+      "n": 100,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 2.5588850184994953,
+      "mae": 1.5066666666666666,
+      "corr": 0.4410462119122941
+    },
+    "local-qwen35-9b": {
+      "n": 100,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 3.509202018499309,
+      "mae": 1.0799999999999998,
+      "corr": 0.5005087439761995
+    },
+    "api-fast": {
+      "n": 100,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.008491050000000002,
+      "mean_latency_s": 0.8171317614996951,
+      "mae": 1.2399999999999998,
+      "corr": 0.5551959845526111
+    }
+  },
+  "toxicity-flag": {
+    "local-qwen35-9b": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 2.5185984760000792,
+      "mae": 0.30375,
+      "corr": 0.4319467020219986,
+      "agreement": 0.69625
+    },
+    "api-fast": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.020207549999999998,
+      "mean_latency_s": 0.8379961055002241,
+      "mae": 0.33875,
+      "corr": 0.4060078192086345,
+      "agreement": 0.66125
+    }
+  },
+  "wmt-mqm": {
+    "local-qwen35-9b": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.0,
+      "mean_latency_s": 2.48327003850045,
+      "mae": 92.74599999999998,
+      "corr": 0.1683750698806335
+    },
+    "api-fast": {
+      "n": 800,
+      "abstain_rate": 0.0,
+      "parsed_rate": 1.0,
+      "cost_usd": 0.02041335,
+      "mean_latency_s": 0.8223271275005573,
+      "mae": 90.00599999999999,
+      "corr": 0.19382423757623277
+    }
+  }
+}

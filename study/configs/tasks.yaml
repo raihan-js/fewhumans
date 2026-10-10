@@ -46,11 +46,14 @@ tasks:
     n_items: 800
 
   - id: fedproc-roles
-    source: local fedproc-ledger gold (owner's own project)
-    permission: owner's own data; Acu-Elligent terms checked at build
-    label_space: categorical (mention roles)
-    estimand: role-labeling accuracy of the ledger classifier
-    n_items: 800
+    status: DROPPED 2026-10-10 (verify-at-build FAILED, see docs/decisions.md)
+    reason: >
+      local "gold" (labeled_mentions.parquet) is audit/model-consensus labels,
+      not human labels (no human experts per PROJECTS.md; VETR reviewer gold
+      pending); and mention contexts cannot be joined reliably (no clause
+      number in gold, doc-only match shows the wrong mention). Parquets kept
+      as weak-truth secondary data only, excluded from the main study.
+    source: local fedproc-ledger (owner's own project)
 
   - id: oraclebench-truth
     source: local oraclebench / HF raihan-js/oraclebench-items (owner's own)

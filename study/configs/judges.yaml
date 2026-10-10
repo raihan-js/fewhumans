@@ -1,0 +1,36 @@
+# FewHumans study — judge panel (Phase 3 plan, 2026-10-10)
+# IDs pinned at build time (marked TBD). Prompts frozen + hashed before any
+# simulation (spec §7.2); never tuned against human labels.
+
+judges:
+  - name: local-qwen35-9b
+    provider: openai_compatible
+    base_url: http://localhost:11434/v1  # Ollama; VERIFY-AT-BUILD daemon+model
+    model: qwen3.5:9b  # ON DISK (6.6GB, used by agent-shootout)
+    confidence: [verbalized, self_consistency_k5_subset]
+    cost: 0.0
+
+  - name: local-qwen35-4b
+    provider: openai_compatible
+    base_url: http://localhost:11434/v1
+    model: qwen3.5:4b  # ON DISK (3.4GB) — cheap/fast panel member
+    confidence: [verbalized]
+    cost: 0.0
+
+  # Spec suggested Qwen2.5-7B + Llama-3.1-8B; deviation (logged): both need
+  # multi-GB downloads while two capable models are already on disk. Revisit
+  # only if the owner wants exact spec models (free, ~10GB, GPU time).
+
+  - name: api-fast
+    provider: openai_compatible  # reuses owner's OpenAI key (fedproc-ledger used it)
+    model: TBD-AT-BUILD  # e.g. gpt-4o-mini-class; VERIFY id + price
+    confidence: [verbalized]
+    cost: per prices.yaml
+
+  - name: api-strong-subset
+    provider: openai_compatible
+    model: TBD-AT-BUILD  # OPTIONAL, 2 tasks only; needs explicit approval
+    confidence: [verbalized]
+    cost: per prices.yaml
+
+anthropic_slot: none  # no key on this machine; skipped unless owner provides

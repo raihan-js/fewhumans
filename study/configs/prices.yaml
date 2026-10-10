@@ -1,0 +1,16 @@
+# FewHumans study — judge price table (EDITABLE; never hard-code in docs).
+# ALL prices VERIFY-AT-BUILD against provider pages. Estimates below use
+# 2026-10-10 public knowledge and are marked ESTIMATE — not facts.
+# See docs/phase3_plan.md for the spend table derived from these.
+
+per_1k_in:
+  api-fast: 0.00015    # ESTIMATE, gpt-4o-mini-class
+  api-strong-subset: 0.003  # ESTIMATE, frontier-mini-class
+
+per_1k_out:
+  api-fast: 0.00060    # ESTIMATE
+  api-strong-subset: 0.012  # ESTIMATE
+
+assumed_tokens_per_judgment:
+  in: 1500
+  out: 150

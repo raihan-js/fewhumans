@@ -1,0 +1,64 @@
+# FewHumans study — task shortlist (Phase 3 plan, 2026-10-10)
+# Status of each field: VERIFIED (checked 2026-10-10) or VERIFY-AT-BUILD.
+# Ground truth for simulation = the human label (spec §7: "what a full human
+# labeling would conclude"). Licence column governs what the JudgeBank (D3) may
+# redistribute: outputs + IDs always; item text only if the licence allows.
+
+tasks:
+  - id: summeval-consistency
+    source: mteb/summeval  # VERIFIED exists; licence VERIFY-AT-BUILD (check card)
+    label_space: ordinal(1..5)
+    estimand: mean consistency of one summarizer (16 systems; pick mid-quality)
+    n_items: 100 summaries x 1 system (experts' mean as truth)
+    note: 2019-era models; possible ceiling effects (validity unaffected)
+
+  - id: mtbench-winrate
+    source: lmsys/mt_bench_human_judgments  # VERIFIED, CC-BY-4.0, 3,355 rows
+    label_space: pairwise(A/B/tie)
+    estimand: win rate of model A over B (one fixed pair, ties = 0.5)
+    n_items: all rows for the pair (~500)
+
+  - id: arena-winrate
+    source: lmarena-ai/arena-human-preference-55k  # VERIFIED, Apache-2.0
+    label_space: pairwise(A/B/tie)
+    estimand: win rate on a subsample of 800 battles (one language slice)
+    n_items: 800
+    note: single rater per battle; truth = that rater's verdict (documented)
+
+  - id: helpsteer2-correctness
+    source: nvidia/HelpSteer2  # VERIFIED, CC-BY-4.0, 21.4k rows
+    label_space: ordinal(0..4)
+    estimand: mean correctness over a 800-item slice
+    n_items: 800
+
+  - id: wmt-mqm
+    source: google/wmt-mqm-human-evaluation (GitHub, original)  # VERIFIED exists
+    mirror: RicardoRei/wmt-mqm-human-evaluation  # unofficial; prefer original
+    licence: VERIFY-AT-BUILD (check repo)
+    label_space: real (MQM score, negative; normalize documented range)
+    estimand: mean MQM score of one system (en-de newstest2021)
+    n_items: ~500 segments
+
+  - id: toxicity-flag
+    source: google/jigsaw_unintended_bias_in_toxicity_classification  # VERIFY-AT-BUILD
+    fallback: a permissive-licence toxicity set (decide at build)
+    label_space: binary
+    estimand: accuracy of a fixed small classifier (or flag rate)
+    n_items: 800
+
+  - id: fedproc-roles
+    source: local fedproc-ledger gold (owner's own project)
+    permission: owner's own data; Acu-Elligent terms checked at build
+    label_space: categorical (mention roles)
+    estimand: role-labeling accuracy of the ledger classifier
+    n_items: 800
+
+  - id: oraclebench-truth
+    source: local oraclebench / HF raihan-js/oraclebench-items (owner's own)
+    label_space: binary, deterministic oracle truth
+    estimand: judge accuracy vs oracle
+    n_items: 800
+
+  # Optional (time permitting, in this order):
+  # - hanna-story (ordinal; VERIFY-AT-BUILD: GitHub availability, licence)
+  # - conll-ner (span F1 ratio estimand; VERIFY-AT-BUILD: licence/redistribution)

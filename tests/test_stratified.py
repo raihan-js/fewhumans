@@ -42,3 +42,11 @@ def test_stratified_refuses_singleton_stratum():
     pred = {"a0": 0.0, "a1": 1.0, "b0": 0.0}
     with pytest.raises(ValueError, match="need ≥2"):
         stratified_ppi_plus(strata, pred, {"a0": 0.0, "b0": 1.0})
+
+
+def test_census_stratum_uses_human_mean():
+    strata = {"a0": "A", "a1": "A", "b0": "B", "b1": "B"}
+    pred = {"a0": 0.0, "a1": 1.0, "b0": 0.2, "b1": 0.8}
+    y = {"a0": 0.0, "a1": 1.0, "b0": 1.0, "b1": 1.0}  # B fully labeled
+    r = stratified_ppi_plus(strata, pred, y)
+    assert r.n_human == 4 and r.lo <= r.value <= r.hi

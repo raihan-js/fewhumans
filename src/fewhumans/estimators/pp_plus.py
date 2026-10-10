@@ -78,8 +78,15 @@ def ppi_plus_mean(
     y = np.asarray(y_human, dtype=float)
     f_lab = np.asarray(pred_human, dtype=float)
     n, n_unl = len(y), len(f_unl)
-    if n < 2 or n_unl < 1 or len(f_lab) != n:
-        raise ValueError("need ≥2 human labels and ≥1 unlabeled prediction")
+    if n < 2 or len(f_lab) != n:
+        raise ValueError("need ≥2 human labels with aligned predictions")
+    if n_unl == 0:
+        # Census: every item labeled; PPI reduces to the human-only mean.
+        from fewhumans.estimators.classical import human_only
+
+        r = human_only(list(y), confidence)
+        return EstimateResult(r.value, r.halfwidth, r.lo, r.hi, n, "E3-ppi-plus",
+                              confidence, False, "lambda=n/a (n=N census)")
     tuned = lam is None
     if lam is None:
         lam = power_tuned_lambda(y, f_lab, f_unl)

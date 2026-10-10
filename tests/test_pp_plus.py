@@ -85,3 +85,12 @@ def test_order_invariance(pairs, f_unl):
     r1 = ppi_plus_mean(f_unl, y, f_lab)
     r2 = ppi_plus_mean(u2, y2, f2)
     assert abs(r1.value - r2.value) < 1e-9
+
+
+def test_census_reduces_to_human_only():
+    y = [1.0, 0.0, 1.0, 1.0]
+    f = [0.9, 0.1, 0.8, 0.7]
+    r = ppi_plus_mean([], y, f)
+    h = human_only(y)
+    assert r.method == "E3-ppi-plus"
+    assert abs(r.value - h.value) < 1e-12 and abs(r.halfwidth - h.halfwidth) < 1e-12

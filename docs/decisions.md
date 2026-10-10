@@ -10,6 +10,13 @@
   mtbench N=318); E5+R3-tox100 kept with its known caveat; Alt-Test skipped
   (no multi-rater tasks); E0 grid runs despite determinism (uniform pipeline).
 
+## 2026-10-10 — post-prereg library fix (logged, conservative)
+- E3/E4 at n=N (census, only summeval-n100): estimators raised instead of
+  returning the human-only mean. Fixed to reduce to human-only (exact for the
+  stratum mean; conservative variance). Direction: makes E3/E4 look MORE like
+  E1, i.e. against savings claims, so it cannot inflate H1/H3. Analysis code
+  unchanged (frozen); 4 affected study configs re-run.
+
 ## 2026-10-10 — A1 local runs launched (approvals A1/A2-fast-only/A3 as-is)
 - Owner approvals: A1 full local ($0), A2 fast API judge only (cap $10, key
   handoff pending), A3 task/panel list as planned. Strong-model subset dropped.

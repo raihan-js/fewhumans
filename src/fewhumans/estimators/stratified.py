@@ -93,14 +93,19 @@ def stratified_ppi_plus(
                 "route more labels there before estimating"
             )
         unl_h = [i for i in ids_h if i not in y_human]
-        if not unl_h:
-            raise ValueError(f"stratum {h!r} has no unlabeled items left")
         y = np.array([y_human[i] for i in lab_h])
-        f_lab = np.array([pred[i] for i in lab_h])
-        f_unl = np.array([pred[i] for i in unl_h])
-        lam = power_tuned_lambda(y, f_lab, f_unl)
-        th_h = float(lam * f_unl.mean() + (y - lam * f_lab).mean())
-        v_h = float(f_unl.var() * lam**2 / len(f_unl) + (y - lam * f_lab).var() / len(y))
+        if not unl_h:
+            # Census in this stratum: human mean with human-only variance
+            # (conservative; the exact stratum variance is 0).
+            th_h = float(y.mean())
+            v_h = float(y.var(ddof=1) / len(y)) if len(y) > 1 else 0.0
+            lam = float("nan")
+        else:
+            f_lab = np.array([pred[i] for i in lab_h])
+            f_unl = np.array([pred[i] for i in unl_h])
+            lam = power_tuned_lambda(y, f_lab, f_unl)
+            th_h = float(lam * f_unl.mean() + (y - lam * f_lab).mean())
+            v_h = float(f_unl.var() * lam**2 / len(f_unl) + (y - lam * f_lab).var() / len(y))
         w_h = len(ids_h) / n_total
         theta += w_h * th_h
         var += w_h**2 * v_h

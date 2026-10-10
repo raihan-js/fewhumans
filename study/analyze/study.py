@@ -44,8 +44,10 @@ def load_parts() -> dict:
 
 
 def curve_ns(task_curves: dict, key: str) -> tuple[np.ndarray, np.ndarray]:
-    ns = np.array(sorted(task_curves[key]))
+    ns = np.array(sorted(n for n in task_curves[key] if task_curves[key][n]["mean_hw"] is not None))
     hws = np.array([task_curves[key][n]["mean_hw"] for n in ns])
+    if len(ns) == 0:
+        return ns, hws
     # Enforce non-increasing (running minimum from the left) for interpolation.
     dec = np.minimum.accumulate(hws)
     return ns.astype(float), dec

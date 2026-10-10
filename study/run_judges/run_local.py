@@ -21,9 +21,9 @@ from typing import Any
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent))
-from tasks import LOADERS  # noqa: E402
+from tasks import LOADERS
 
-from fewhumans.judges.runner import JudgeCall, JudgeConfig, PriceTable, Runner
+from fewhumans.judges.runner import JudgeConfig, PriceTable, Runner
 
 TMPL = {
     "ordinal": (

@@ -1,0 +1,8 @@
+site_name: FewHumans
+theme:
+  name: material
+nav:
+  - Concepts: concepts.md
+  - Tutorial: tutorial.md
+  - Recipes: recipes.md
+  - When not to use: when-not-to-use.md

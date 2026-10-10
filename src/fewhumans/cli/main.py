@@ -17,15 +17,13 @@ app = typer.Typer(help="FewHumans: few human labels, valid estimates.")
 
 
 def _load_session(path: Path) -> Session:
-    # Phase-1: task/panel come from session.json written at init.
+    # Task spec comes from session.json (stored at init); panel likewise.
     meta = json.loads((path / "session.json").read_text())
     _ = meta
-    task = Task(label_space=Categorical(["correct", "incorrect"]),
-                estimand=Mean(of=lambda y: (str(y) == "correct")))
     panel = [FakeJudge(j.get("name", "fake"), accuracy=j.get("accuracy", 0.8), seed=j.get("seed", 0))
              for j in meta.get("panel", [{"name": "fake"}])]
     routing = Uniform()
-    return Session.load(path, task, panel, routing)
+    return Session.load(path, None, panel, routing)
 
 
 @app.command()
@@ -75,6 +73,30 @@ def report_cmd(path: Path, html: Path = typer.Option(Path("report.html"), "--htm
     s = _load_session(Path(path))
     out = s.report(html)
     typer.echo(f"report -> {out}")
+
+
+@app.command()
+def label(path: Path, n: int = 20, annotator: str = typer.Option("", "--annotator")) -> None:
+    """Terminal labeling loop: shows queued items, records labels + timestamps."""
+    import datetime
+
+    s = _load_session(Path(path))
+    if not annotator:
+        annotator = typer.prompt("Annotator id")
+    items = s.queue(n)
+    typer.echo(f"queued {len(items)} items (sampling probabilities logged)")
+    done = 0
+    for it in items:
+        typer.echo(f"--- {it.item_id} (p={s.probs.get(it.item_id, 0):.4f}) ---")
+        typer.echo(str(it.payload)[:2000])
+        lab = typer.prompt("Label (empty to skip)")
+        if not lab.strip():
+            continue
+        s.add_human(it.item_id, label=lab, annotator=annotator)
+        s.annotators[it.item_id] += f" @ {datetime.datetime.now(datetime.timezone.utc).isoformat()}"
+        s.save()
+        done += 1
+    typer.echo(f"labeled {done}/{len(items)}")
 
 
 def main() -> None:

@@ -49,14 +49,28 @@ class Session:
         return s
 
     @staticmethod
-    def load(path: str | Path, task: Task, panel: Sequence[Judge], routing: Any) -> Session:
+    def load(path: str | Path, task: Task | None, panel: Sequence[Judge], routing: Any) -> Session:
+        from fewhumans.core.task import Binary, Categorical, Mean, Ordinal, Real
+
         p = Path(path)
         items: list[Item] = []
         for line in (p / "items.jsonl").read_text().splitlines():
             if line.strip():
                 items.append(Item.from_dict(json.loads(line)))
-        s = Session(path, items, task, panel, routing)
         meta = json.loads((p / "session.json").read_text())
+        if task is None:
+            spec = meta.get("task", {"space": "categorical", "classes": ["correct", "incorrect"]})
+            space = spec.get("space", "categorical")
+            if space == "binary":
+                ls: Any = Binary()
+            elif space == "ordinal":
+                ls = Ordinal(lo=int(spec.get("lo", 1)), hi=int(spec.get("hi", 5)))
+            elif space == "real":
+                ls = Real()
+            else:
+                ls = Categorical(list(spec.get("classes", ["correct", "incorrect"])))
+            task = Task(label_space=ls, estimand=Mean(of=lambda y: (str(y) == "correct")))
+        s = Session(path, items, task, panel, routing)
         s.confidence = meta.get("confidence", 0.95)
         s.round_no = meta.get("round_no", 0)
         if (p / "panel.jsonl").exists():
@@ -95,8 +109,23 @@ class Session:
             "confidence": self.confidence, "round_no": self.round_no,
             "panel": [j.config() for j in self.panel],
             "routing": type(self.routing_policy).__name__,
+            "task": self._task_spec(),
         }, indent=2))
         (self.path / "history.json").write_text(json.dumps(self.history, indent=2))
+
+    def _task_spec(self) -> dict[str, Any]:
+        from fewhumans.core.task import Binary, Categorical, Ordinal, Real
+
+        ls = self.task.label_space
+        if isinstance(ls, Binary):
+            return {"space": "binary"}
+        if isinstance(ls, Ordinal):
+            return {"space": "ordinal", "lo": ls.lo, "hi": ls.hi}
+        if isinstance(ls, Real):
+            return {"space": "real"}
+        if isinstance(ls, Categorical):
+            return {"space": "categorical", "classes": list(ls.classes)}
+        return {"space": "categorical", "classes": ["correct", "incorrect"]}
 
     # -- panel / routing / humans --
     def run_panel(self, max_cost_usd: float = 5.0) -> dict[str, int]:

@@ -78,3 +78,42 @@ def test_session_all_methods_with_active_router(tmp_path):
     rs = s.estimate_seq()
     assert rs.anytime_valid and rs.n_human >= 10
     assert s.report(tmp_path / "r.html")
+
+
+def test_report_sections(tmp_path):
+    import fewhumans as fh
+    from fewhumans.core.items import Item
+    from fewhumans.core.session import Session
+    from fewhumans.core.task import Categorical, Mean, Task
+
+    items = [Item(f"i{k}", {"text": f"t{k}", "truth": "correct" if k % 2 == 0 else "incorrect"}) for k in range(40)]
+    task = Task(Categorical(["correct", "incorrect"]), Mean(of=lambda y: str(y) == "correct"))
+    panel = fh.Panel([fh.FakeJudge("j1", accuracy=0.5, seed=0), fh.FakeJudge("j2", accuracy=0.5, seed=1)])
+    s = Session.create(tmp_path / "s", items, task, panel, fh.routing.Uniform(budget=300))
+    s.run_panel()
+    for q in s.queue(n=20):
+        s.add_human(q.item_id, label=q.payload["truth"], annotator="t")
+    s.estimate("E2-ppi")
+    s.report(tmp_path / "r.html")
+    html = (tmp_path / "r.html").read_text()
+    for needle in ["Estimate history", "stratum", "calibration", "disagreements", "Plain-language", "descriptive, not estimates"]:
+        assert needle in html, needle
+
+
+def test_label_cli(tmp_path):
+    import json
+
+    from typer.testing import CliRunner
+
+    from fewhumans.cli.main import app
+
+    items = [{"item_id": f"c{i}", "payload": {"text": f"t{i}"}} for i in range(6)]
+    p = tmp_path / "items.jsonl"
+    p.write_text("\n".join(json.dumps(r) for r in items))
+    r = CliRunner().invoke(app, ["init", str(tmp_path / "s"), "--items", str(p)])
+    assert r.exit_code == 0, r.output
+    r = CliRunner().invoke(app, ["judge", str(tmp_path / "s")])
+    assert r.exit_code == 0, r.output
+    r = CliRunner().invoke(app, ["label", str(tmp_path / "s"), "--n", "2", "--annotator", "t"], input="correct\nincorrect\n")
+    assert r.exit_code == 0, r.output
+    assert "labeled 2/2" in r.output

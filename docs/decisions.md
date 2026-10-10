@@ -2,6 +2,14 @@
 
  append-only, newest first.
 
+## 2026-10-10 — Phase 5 pre-registered (BEFORE main study)
+- Analysis code frozen at `2b8090e`; preregistration frozen at `2ee2c93`
+  (hash self-recorded in follow-up `8f5a524`). Targets w, grid, censoring rule,
+  hypotheses H1–H5, cost assumptions ($0.30/label [$0.10, $1.00]) all frozen.
+- Adaptation logged: n_ref = min(400, N//2) for small pools (summeval N=100,
+  mtbench N=318); E5+R3-tox100 kept with its known caveat; Alt-Test skipped
+  (no multi-rater tasks); E0 grid runs despite determinism (uniform pipeline).
+
 ## 2026-10-10 — A1 local runs launched (approvals A1/A2-fast-only/A3 as-is)
 - Owner approvals: A1 full local ($0), A2 fast API judge only (cap $10, key
   handoff pending), A3 task/panel list as planned. Strong-model subset dropped.

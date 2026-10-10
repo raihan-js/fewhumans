@@ -16,8 +16,9 @@ import asyncio
 import hashlib
 import json
 import time
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
 import httpx
 from pydantic import BaseModel, Field
@@ -170,7 +171,9 @@ class Runner:
                 labs = [parse_output(t)[0] for t in texts]
                 top = max(set(map(str, labs)), key=list(map(str, labs)).count)
                 agree = sum(str(v) == top for v in labs) / len(labs)
-                label, conf, status, raw = top, agree, "ok", texts[0]
+                label: Any = top
+                conf: float | None = agree
+                status, raw = "ok", texts[0]
             else:
                 label, conf, status = parse_output(texts[0])
                 raw = texts[0]

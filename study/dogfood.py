@@ -16,6 +16,7 @@ Writes results/dogfood.json. No new human labels: oracle = deterministic.
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import numpy as np
 from huggingface_hub import hf_hub_download
@@ -26,8 +27,8 @@ from fewhumans.estimators import human_only, ppi_mean, ppi_plus_mean
 def load_pointwise() -> tuple[np.ndarray, np.ndarray]:
     p3 = hf_hub_download("raihan-js/oraclebench-items", "judge_runs/qwen3b_pointwise.jsonl", repo_type="dataset")
     p05 = hf_hub_download("raihan-js/oraclebench-items", "judge_runs/qwen05b_pointwise.jsonl", repo_type="dataset")
-    r3 = [json.loads(l) for l in open(p3) if l.strip()]
-    r05 = [json.loads(l) for l in open(p05) if l.strip()]
+    r3 = [json.loads(l) for l in Path(p3).read_text().splitlines() if l.strip()]
+    r05 = [json.loads(l) for l in Path(p05).read_text().splitlines() if l.strip()]
     assert len(r3) == len(r05) == 1760
     Y, F = [], []
     for a, b in zip(r3, r05):
@@ -40,8 +41,8 @@ def load_pointwise() -> tuple[np.ndarray, np.ndarray]:
 def load_pairwise() -> tuple[np.ndarray, np.ndarray]:
     p3 = hf_hub_download("raihan-js/oraclebench-items", "judge_runs/qwen3b_pairwise_matched.jsonl", repo_type="dataset")
     p05 = hf_hub_download("raihan-js/oraclebench-items", "judge_runs/qwen05b_pairwise_matched.jsonl", repo_type="dataset")
-    r3 = [json.loads(l) for l in open(p3) if l.strip()]
-    r05 = [json.loads(l) for l in open(p05) if l.strip()]
+    r3 = [json.loads(l) for l in Path(p3).read_text().splitlines() if l.strip()]
+    r05 = [json.loads(l) for l in Path(p05).read_text().splitlines() if l.strip()]
     Y, F = [], []
     for a, b in zip(r3, r05):
         if a.get("order") not in ("AB", "BA") or a["picked_wrong"] is None:

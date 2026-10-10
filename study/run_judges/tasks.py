@@ -101,7 +101,7 @@ def load_arena(n: int = 800, seed: int = 0) -> list[dict[str, Any]]:
     for r in ds:
         if rng.random() > n / 55000:
             continue
-        wa, wb, wt = int(r["winner_model_a"]), int(r["winner_model_b"]), int(r["winner_tie"])
+        wa, _wb, wt = int(r["winner_model_a"]), int(r["winner_model_b"]), int(r["winner_tie"])
         truth = 0.5 if wt else float(wa)
         rows.append({
             "item_id": f"arena-{r['id']}",

@@ -44,9 +44,18 @@ Alternative Annotator Test \citep{calderon2025alt} frame when judges may stand
 in for humans; \citet{gligoric2024unconfident} study confidence-driven
 inference; \citet{sfyraki2026revisiting} found uncertainty query rules often
 barely beat near-uniform sampling --- our H2 pre-registered both outcomes.
-FewHumans adds one workflow (routing + estimation + stopping + report cards)
-with validated defaults, a multi-judge disagreement signal, and the measured
-harm of judge-only reporting.
+Practitioner tooling (DeepEval, Evidently, Hamel's judge-validation guide
+\citealp{husain2024judge}) runs LLM judges and checks agreement, but performs
+no bias correction. Two close contemporaries appeared while this work was
+underway: \texttt{evalstats} \citep{arawjo2026evalstats} implements PPI
+corrections with an impressive battery of corrected hypothesis tests and WMT
+simulations, and PRECISE \citep{precise2026aaai} extends PPI++ to ranking
+metrics; \citet{chen2026efficient} unify PPI++ with efficient influence
+functions in theory. Against these, FewHumans contributes the combined
+routing$+$estimation$+$stopping workflow with coverage-gated defaults, the
+multi-judge disagreement signal, anytime-valid stopping, and --- uniquely, to
+our knowledge --- a pre-registered multi-task study that reports negative
+results on active routing, plus measured harm of judge-only reporting.
 
 \section{The toolkit}
 Items, judges (LLM/OpenAI-compatible/Anthropic/Ollama-native, Python,
@@ -72,6 +81,10 @@ cost 0--1.3pp; stress judges (99\%/30\%, class-biased, miscalibrated) all pass.
 \section{Main study}
 Pre-registered (targets = E1 half-width at $n_{\rm ref}=\min(400,N/2)$;
 savings ratio vs E1+R0 with bootstrap CIs; DL random-effects pool).
+Tasks (3-judge panel: 2 local Ollama + gpt-4o-mini): HelpSteer2 correctness
+\citep{wang2024helpsteer2}, SummEval consistency \citep{fabbri2021summeval},
+MT-Bench human judgments \citep{zheng2023judging} and Arena preferences \citep{chiang2024chatbot}, WMT MQM scores \citep{freitag2021experts}, Civil
+Comments toxicity \citep{borkan2019nuanced}, and our OracleBench bank.
 Pooled human-label savings at equal precision:
 \begin{center}\begin{tabular}{lcc}\toprule
 method & ratio & 95\% CI \\\midrule
@@ -90,7 +103,11 @@ E5+R3/full & \PooledE5R3full & \PooledE5R3fullCI \\\bottomrule
 H1 holds weakly (E3 $\approx$0.91 everywhere); H2 fails (R3 far worse than
 uniform despite disagreement AUROC 0.61--0.80); H3 is moot (no active benefit
 to capture; E4 $\approx$ E3); H4 holds (\HFourMiss/\HFourTot); H5 fails
-(full $\approx$ best single).
+(full $\approx$ best single). Per-task E3 savings:
+HelpSteer2 \TaskHelpSteer~\TaskHelpSteerCI;
+SummEval \TaskSummEval~\TaskSummEvalCI; MT-Bench \TaskMTBench~\TaskMTBenchCI;
+Arena \TaskArena~\TaskArenaCI; WMT-MQM \TaskWMTMQM~\TaskWMTMQMCI;
+Toxicity \TaskToxicity~\TaskToxicityCI; OracleBench \TaskOracleBench~\TaskOracleBenchCI.
 
 \section{When does routing help?}
 With 7 tasks the analysis is descriptive: disagreement predicts errors
@@ -114,6 +131,12 @@ No new human labels were collected. Dataset licences are listed in the
 JudgeBank datasheet; only redistribution-allowed content is included.
 FewHumans reduces, never removes, human review --- not for high-stakes
 medical/legal use.
+
+\section*{Code and data}
+Library + CLI: \url{https://github.com/raihan-js/fewhumans} (PyPI
+\texttt{fewhumans}); study code, frozen pre-registration and all
+\texttt{results/*.json} in the same repo; JudgeBank:
+\url{https://huggingface.co/datasets/raihan-js/fewhumans-judgebank}.
 
 \bibliographystyle{plainnat}
 \bibliography{refs}

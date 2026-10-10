@@ -40,6 +40,14 @@ def main() -> None:
     # Dogfood.
     o.append(f"\\newcommand{{\\DogPointPub}}{{{dog['pointwise-false-accept']['published']*100:.2f}}}")
     o.append(f"\\newcommand{{\\DogPairPub}}{{{dog['pairwise-picks-right']['published']*100:.1f}}}")
+    # Per-task E3 savings (short names for the table).
+    short = {"helpsteer2-correctness": "HelpSteer", "summeval-consistency": "SummEval",
+             "mtbench-winrate": "MTBench", "arena-winrate": "Arena", "wmt-mqm": "WMTMQM",
+             "toxicity-flag": "Toxicity", "oraclebench-truth": "OracleBench"}
+    for task, name in short.items():
+        v = summ["tasks"][task]["E3+R0/full"]
+        o.append(f"\\newcommand{{\\Task{name.replace('-', '')}}}{{{v['ratio']:.2f}}}")
+        o.append(f"\\newcommand{{\\Task{name.replace('-', '')}CI}}{{[{v['lo']:.2f}, {v['hi']:.2f}]}}")
     # Spend.
     o.append("\\newcommand{\\APISpend}{\\$0.29}")
     o.append("\\newcommand{\\APICap}{\\$10}")

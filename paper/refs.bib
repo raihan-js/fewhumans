@@ -43,6 +43,31 @@
   year = {2026}, eprint = {2604.18569}, archivePrefix = {arXiv},
   note = {ICLR 2026; abs verified 2026-10-10; motivated our open H2}
 }
+@misc{arawjo2026evalstats,
+  author = {Arawjo, Ian},
+  title = {How to Run Statistics over {LLM} Judges and Trust the Results: Calibrated Inference for Small-Sample {AI} Evaluation with \texttt{evalstats}},
+  year = {2026}, howpublished = {\url{https://exa.ai/library/publication/bh1vsm6cl6b}},
+  note = {Publication page + statsforevals.com guide verified 2026-10-10; implements PPI corrections incl.\ rank tests and WMT sims; closest contemporary to this work}
+}
+@inproceedings{precise2026aaai,
+  author = {Divekar, Abhishek and Majumder, Anirban},
+  title = {{PRECISE}: Reducing the Bias of {LLM} Evaluations Using Prediction-Powered Ranking Estimation},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence (IAAI Track)},
+  volume = {40}, number = {47}, pages = {39929--39938}, year = {2026},
+  note = {OJS page verified 2026-10-10; extends PPI++ to ranking metrics (Precision@K), which FewHumans does not cover}
+}
+@misc{chen2026efficient,
+  author = {Chen, Yiqun T. and Lu, Sizhu and Li, Sijia and Guo, Moran and Li, Shengyi},
+  title = {Efficient Inference for Noisy {LLM}-as-a-Judge Evaluation},
+  year = {2026}, eprint = {2601.05420}, archivePrefix = {arXiv},
+  note = {Abs verified 2026-10-10; unifies PPI++ with EIF theory; reports 35--55\% narrower intervals than vanilla PPI on Arena with strong judges}
+}
+@misc{husain2024judge,
+  author = {Husain, Hamel},
+  title = {Using {LLM}-as-a-Judge For Evaluation: A Complete Guide},
+  year = {2024}, howpublished = {\url{https://hamel.dev/blog/posts/llm-judge/}},
+  note = {Practitioner guide verified 2026-10-10; documents the train/dev/test agreement-check workflow FewHumans replaces with valid combination}
+}
 @inproceedings{fabbri2021summeval,
   author = {Fabbri, Alexander R. and Kry\'sci\'nski, Wojciech and McCann, Bryan and Xiong, Caiming and Socher, Richard and Radev, Dragomir},
   title = {{SummEval}: Re-evaluating Summarization Evaluation},
@@ -55,8 +80,13 @@
   year = {2024}, eprint = {2410.01257}, archivePrefix = {arXiv},
   note = {HF card verified 2026-10-10; CC-BY-4.0}
 }
-@misc{chiang2024chatbot,
-  author = {Chiang, Wei-Lin and Zheng, Lianmin and Sheng, Ying and Angelopoulos, Anastasios Nikolas and Li, Tianle and Li, Dacheng and Zhang, Hao and Zhu, Banghua and Jordan, Michael and Gonzalez, Joseph E. and Stoica, Ion},
+@misc{zheng2023judging,
+  author = {Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric P. and Zhang, Hao and Gonzalez, Joseph E. and Stoica, Ion},
+  title = {Judging {LLM}-as-a-Judge with {MT}-Bench and Chatbot Arena},
+  year = {2023}, eprint = {2306.05685}, archivePrefix = {arXiv},
+  note = {NeurIPS 2023 Datasets and Benchmarks; abs verified 2026-10-10}
+}
+@misc{chiang2024chatbot,  author = {Chiang, Wei-Lin and Zheng, Lianmin and Sheng, Ying and Angelopoulos, Anastasios Nikolas and Li, Tianle and Li, Dacheng and Zhang, Hao and Zhu, Banghua and Jordan, Michael and Gonzalez, Joseph E. and Stoica, Ion},
   title = {Chatbot Arena: An Open Platform for Evaluating {LLMs} by Human Preference},
   year = {2024}, eprint = {2403.04132}, archivePrefix = {arXiv},
   note = {HF card verified 2026-10-10; Apache-2.0 slice used}

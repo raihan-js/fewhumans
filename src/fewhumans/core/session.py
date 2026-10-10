@@ -122,9 +122,55 @@ class Session:
         vals = list(labs.values())
         return max(set(map(str, vals)), key=list(map(str, vals)).count)
 
+    def _routing_ctx(self, unlabeled: list[str]) -> dict[str, Any]:
+        from fewhumans.estimators.stratified import panel_agreement_strata
+        from fewhumans.routing import compute_features
+
+        feats = compute_features(
+            {i: self.panel_outputs.get(i, {}) for i in unlabeled},
+            {i: self.panel_conf.get(i, {}) for i in unlabeled},
+        )
+        strata = panel_agreement_strata(self.panel_outputs)
+        ctx: dict[str, Any] = {
+            "features": feats,
+            "stratum": {i: strata.get(i, "all") for i in unlabeled},
+        }
+        if self.humans:
+            est = self.task.estimand
+            rect: dict[str, list[float]] = {}
+            for iid, h in self.humans.items():
+                p = self._panel_pred(iid)
+                if p is None:
+                    continue
+                rect.setdefault(strata.get(iid, "all"), []).append(est.map(h) - est.map(p))
+            import numpy as np
+
+            ctx["stratum_std"] = {
+                h: float(np.std(v, ddof=1)) if len(v) > 1 else 1.0 for h, v in rect.items()
+            }
+        return ctx
+
+    def _update_router(self) -> None:
+        update = getattr(self.routing_policy, "update", None)
+        if update is None or not self.humans:
+            return
+        from fewhumans.routing import compute_features
+
+        feats_all = compute_features(self.panel_outputs, self.panel_conf)
+        rows, wrong = [], []
+        for iid, h in self.humans.items():
+            p = self._panel_pred(iid)
+            if p is None or iid not in feats_all:
+                continue
+            rows.append(feats_all[iid])
+            wrong.append(0 if str(p) == str(h) else 1)
+        if rows:
+            update(rows, wrong)
+
     def queue(self, n: int = 20) -> list[Item]:
         unlabeled = [it.item_id for it in self.items if it.item_id not in self.humans]
-        probs = self.routing_policy.select(unlabeled, n, self.round_no)
+        self._update_router()
+        probs = self.routing_policy.select(unlabeled, n, self.round_no, self._routing_ctx(unlabeled))
         self.round_no += 1
         for iid, p in probs.items():
             self.probs.setdefault(iid, p)
@@ -152,6 +198,13 @@ class Session:
         return judge_all, y, f, [est.map(self.humans[i]) for i in h_ids]
 
     def estimate(self, method: str = "auto") -> EstimateResult:
+        from fewhumans.estimators import (
+            active_mean,
+            ppi_plus_mean,
+            stratified_ppi_plus,
+        )
+        from fewhumans.estimators.stratified import panel_agreement_strata
+
         judge_all, y, f, _ = self._mapped()
         if method == "auto":
             method = "E2-ppi" if (y and judge_all) else ("E1-human-only" if y else "E0-judge-only")
@@ -165,8 +218,51 @@ class Session:
             if not y or not judge_all:
                 raise ValueError("PPI needs panel outputs + human labels")
             res = ppi_mean(judge_all, y, f, self.confidence)
+        elif method.startswith("E3"):
+            if not y:
+                raise ValueError("PPI++ needs human labels")
+            est = self.task.estimand
+            hset = set(self.humans)
+            f_unl = [est.map(self._panel_pred(it.item_id)) for it in self.items if it.item_id not in hset]
+            res = ppi_plus_mean(f_unl, y, f, self.confidence)
+        elif method.startswith("E4"):
+            if not y:
+                raise ValueError("stratified PPI++ needs human labels")
+            est = self.task.estimand
+            strata_all = panel_agreement_strata(self.panel_outputs)
+            # Items without panel outputs cannot be predicted; restrict to covered.
+            covered = {it.item_id for it in self.items if self._panel_pred(it.item_id) is not None}
+            res = stratified_ppi_plus(
+                {i: strata_all[i] for i in covered},
+                {i: est.map(self._panel_pred(i)) for i in covered},
+                {i: est.map(h) for i, h in self.humans.items() if i in covered},
+                self.confidence,
+            )
+        elif method.startswith("E5"):
+            if not y:
+                raise ValueError("active inference needs human labels")
+            est = self.task.estimand
+            res = active_mean(
+                {it.item_id: est.map(self._panel_pred(it.item_id)) for it in self.items},
+                {i: est.map(h) for i, h in self.humans.items()},
+                dict(self.probs),
+                self.confidence,
+            )
         else:
-            raise ValueError(f"unknown method {method} (Phase 1 supports E0/E1/E2)")
+            raise ValueError(f"unknown method {method} (supports E0/E1/E2/E3/E4/E5)")
+        self.history.append({"method": res.method, **res.to_dict()})
+        self.save()
+        return res
+
+    def estimate_seq(self) -> EstimateResult:
+        """E6: anytime-valid confidence sequence for the human-only mean."""
+        from fewhumans.sequential import cs_human_only
+
+        est = self.task.estimand
+        vals = [est.map(h) for h in self.humans.values()]
+        if not vals:
+            raise ValueError("no human labels yet")
+        res = cs_human_only(vals, self.confidence)
         self.history.append({"method": res.method, **res.to_dict()})
         self.save()
         return res

@@ -1,6 +1,6 @@
 """Routing: known probabilities, floor, reproducibility."""
 
-from fewhumans.routing import Active, Uniform
+from fewhumans.routing import Disagreement, Uniform
 
 
 def test_uniform_probs():
@@ -18,8 +18,9 @@ def test_uniform_reproducible():
 
 
 def test_active_floor():
-    r = Active(signal="disagreement", budget=300, seed=0, prob_floor=0.1)
+    r = Disagreement(budget=300, seed=0, floor_frac=0.1)
     ids = [f"i{k}" for k in range(100)]
-    probs = r.select(ids, 5, 0)
+    probs = r.select(ids, 5, 0, {"features": {i: {"disagreement": 0.0} for i in ids}})
+    assert probs
     floor = 0.1 * 300 / 100
     assert all(p >= floor - 1e-12 for p in probs.values())

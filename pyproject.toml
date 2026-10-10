@@ -24,8 +24,8 @@ dependencies = [
 dev = ["pytest>=8", "hypothesis>=6.0", "ruff>=0.4", "mypy>=1.0"]
 docs = ["mkdocs-material>=9.0"]
 # ppi_py reference implementation (github.com/aangelopoulos/ppi_py) is a Phase-2
-# cross-check dependency; package name on PyPI to be verified before pinning.
-ppi = []
+# cross-check dependency; not on PyPI, installed from git (verified 2026-10-10).
+ppi = ["ppi_py @ git+https://github.com/aangelopoulos/ppi_py"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -80,3 +80,24 @@ def human_only(values: list[float], confidence: float = 0.95) -> EstimateResult:
     hw = _z(confidence) * se if n > 1 else float("nan")
     return EstimateResult(mean, hw, mean - hw, mean + hw, n, "E1-human-only",
                           confidence, False, "")
+
+
+def human_proportion_wilson(k: int, n: int, confidence: float = 0.95) -> EstimateResult:
+    """E1 (binary): Wilson score interval for a proportion.
+
+    Estimand: P(Y = 1) under uniform random sampling. Self-contained
+    (inverting the score test); always lies in [0, 1] and contains k/n.
+    """
+    if n <= 0:
+        raise ValueError("need ≥1 trial")
+    if not 0 <= k <= n:
+        raise ValueError("k must satisfy 0 ≤ k ≤ n")
+    z = _z(confidence)
+    p = k / n
+    denom = 1.0 + z**2 / n
+    center = (p + z**2 / (2 * n)) / denom
+    hw = z * np.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom
+    lo, hi = float(np.clip(center - hw, 0.0, 1.0)), float(np.clip(center + hw, 0.0, 1.0))
+    lo, hi = min(lo, p), max(hi, p)  # Wilson contains p-hat; snap fp dust at k=0/n
+    return EstimateResult(p, float(hw), lo, hi,
+                          n, "E1-wilson", confidence, False, "")

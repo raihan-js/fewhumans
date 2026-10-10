@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from run_local import JUDGES, build_prompt, main_async  # noqa: E402
+from run_local import JUDGES, main_async
 
 from fewhumans.judges.runner import JudgeConfig, PriceTable
 

@@ -2,6 +2,8 @@
 
 Map judge/human labels to numbers with `Mean(of=...)`, then pick the method
 the gate validated for your budget (see results/coverage_report.md ranges).
+The README's "Which estimator when" table is the 30-second version; below
+is per label space.
 
 - **Binary** (toxicity, oracle truth): `Mean(of=lambda y: y == "correct")`.
   E1/E2/E3/E5 all validated n≥50. Wilson (`human_proportion_wilson`) for

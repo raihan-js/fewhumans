@@ -4,6 +4,14 @@ Combine **few human labels** with **many LLM-judge labels** and still report an
 **unbiased estimate with a valid confidence interval** — plus which items humans
 should label next, and when to stop.
 
+## Install
+
+```
+pip install fewhumans
+```
+
+(Contributors: `pip install -e ".[dev]"` for tests and linters.)
+
 ![pooled savings](images/forest.png)
 
 Pre-registered study, 7 real annotation tasks, 3-judge panel (2 local + 1 API):
@@ -38,6 +46,19 @@ print(est)  # value [lo, hi] (E3-ppi-plus, 20 human labels, 95% CI)
 s.report("report.html")  # judge report card
 ```
 
+## Which estimator when
+
+| situation | use | why |
+|---|---|---|
+| Default: uniform humans, decent judge | **E3 PPI++** | saved ~9% of labels on all 7 study tasks |
+| Panel agrees on most items | **E4 stratified** | same savings, simpler assumptions (needs n≥100) |
+| Heavy-tailed truth (scores with outliers) | **E5 active** or n≥200 | only method that held everywhere on wmt-mqm |
+| Just start labeling, no judge yet | **E1 human-only** | always valid; the baseline everything beats (or not) |
+| Quick sanity number | E0 judge-only | NEVER report it — it missed truth 18/21 times here |
+| Fixed PPI (λ=1) / disagreement routing | avoid | cost 2.3×/2.6× with mediocre judges in our study |
+
+Validated ranges: `results/coverage_report.md`. Worked examples: `examples/`.
+
 ## CLI
 
 ```
@@ -62,8 +83,10 @@ fewhumans report runs/x --html report.html
 ## Reproduce
 
 ```
-pip install -e ".[dev]"
-pytest -q                                   # 47 tests
+pip install -e ".[dev]"   # contributors
+pytest -q                                   # 49 tests
+python examples/quickstart_accuracy.py      # accuracy from judges + 50 humans
+python examples/pairwise_winrate.py         # win rate with disagreement routing
 python examples/toy_end_to_end.py
 python study/analyze/study.py               # needs results/study_parts/
 ```

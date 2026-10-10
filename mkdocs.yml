@@ -4,5 +4,6 @@ theme:
 nav:
   - Concepts: concepts.md
   - Tutorial: tutorial.md
+  - Examples: examples.md
   - Recipes: recipes.md
   - When not to use: when-not-to-use.md

@@ -21,6 +21,7 @@ from run_local import JUDGES, main_async
 from fewhumans.judges.runner import JudgeConfig, PriceTable
 
 KEY_FILE = Path.home() / ".config" / "fewhumans" / "openai_key"
+DOTENV = Path(__file__).resolve().parents[2] / ".env"
 # Prices VERIFIED 2026-10-10 against https://platform.openai.com/docs/pricing
 # (Standard tier, per 1M tokens). Re-verify if a run happens much later.
 PRICES = PriceTable(
@@ -30,13 +31,17 @@ PRICES = PriceTable(
 
 
 def read_key() -> str:
-    if not KEY_FILE.exists():
-        raise SystemExit(
-            f"missing {KEY_FILE}. Store it with:\n"
-            '  read -rs K && printf %s "$K" > ~/.config/fewhumans/openai_key '
-            "&& chmod 600 ~/.config/fewhumans/openai_key"
-        )
-    return KEY_FILE.read_text().strip()
+    for source in (DOTENV, KEY_FILE):
+        if source.exists():
+            for line in source.read_text().splitlines():
+                if line.startswith("OPENAI_API_KEY"):
+                    key = line.split("=", 1)[1].strip().strip("\"").strip("'")
+                    if key:
+                        return key
+    raise SystemExit(
+        f"no OPENAI_API_KEY in {DOTENV} or {KEY_FILE}. Store it with:\n"
+        '  printf %s "sk-..." >> .env  (project folder, gitignored)'
+    )
 
 
 def main() -> None:

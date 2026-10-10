@@ -28,6 +28,15 @@
 - A1 running in background: study/run_judges/run_all_local.sh (8 tasks × 2
   judges, ~10k judgments, log study/run_judges/runs.log).
 
+## 2026-10-10 — A2 launched (key in project .env, verified)
+- Owner put OPENAI_API_KEY in fewhumans/.env (gitignored, spec-compliant).
+  Empty ~/.config stub removed. run_api.py reads .env first, key-file fallback.
+- Verification call: gpt-4o-mini, strict JSON ok, $0.000016. Model ID confirmed.
+- Prices VERIFIED at platform.openai.com/docs/pricing: gpt-4o-mini $0.15/$0.60
+  per 1M in/out (matches prices.yaml). Spend est ~$1.50-3 for 6,400 judgments;
+  per-task rail $3, owner cap $10. A2 running (log runs-api.log), concurrent
+  with A1 (network vs GPU, no contention).
+
 ## 2026-10-10 — Phase 2 (estimators + routing)
 - E3 mirrors `ppi_py` (`ppi.ppi_mean_pointestimate`/`ppi_mean_ci`, installed from
   git for cross-check only) to machine precision (worst diff 2.2e-16 over 20

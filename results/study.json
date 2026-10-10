@@ -6725,11 +6725,11 @@
     "panel": "best",
     "n": 100,
     "R": 2000,
-    "mean_hw": null,
-    "se_hw": null,
-    "coverage": 0.0,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.3086123029319978,
+    "se_hw": 5.552503422540541e-20,
+    "coverage": 1.0,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
@@ -6773,11 +6773,11 @@
     "panel": "cheap",
     "n": 100,
     "R": 2000,
-    "mean_hw": null,
-    "se_hw": null,
-    "coverage": 0.0,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.3086123029319978,
+    "se_hw": 9.207785249865583e-20,
+    "coverage": 1.0,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
@@ -6821,11 +6821,11 @@
     "panel": "full",
     "n": 100,
     "R": 2000,
-    "mean_hw": null,
-    "se_hw": null,
-    "coverage": 0.0,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.3086123029319978,
+    "se_hw": 7.345271604938632e-20,
+    "coverage": 1.0,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
@@ -6869,11 +6869,11 @@
     "panel": "full",
     "n": 100,
     "R": 2000,
-    "mean_hw": null,
-    "se_hw": null,
-    "coverage": 0.0,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.30941905506807815,
+    "se_hw": 1.2415775098100891e-18,
+    "coverage": 1.0,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",

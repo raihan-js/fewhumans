@@ -53,18 +53,22 @@ def curve_ns(task_curves: dict, key: str) -> tuple[np.ndarray, np.ndarray]:
     return ns.astype(float), dec
 
 
-def n_to_target(ns: np.ndarray, hws: np.ndarray, w: float) -> float:
-    """Labels needed for mean-hw ≤ w (linear interp; censored at grid ends)."""
+def n_to_target(ns: np.ndarray, hws: np.ndarray, w: float) -> tuple[float, bool]:
+    """Labels needed for mean-hw ≤ w (linear interp; censored at grid ends).
+
+    Returns (n, censored). Censored=True when w is never reached (upper) or
+    already beaten at the smallest grid point (lower).
+    """
     if hws[0] <= w:
-        return float(ns[0]) / 2  # already below at smallest grid point
+        return float(ns[0]) / 2, True
     if hws[-1] > w:
-        return float(ns[-1]) * 2  # never reaches within grid
+        return float(ns[-1]) * 2, True
     # hws decreasing: find segment
     for i in range(len(ns) - 1):
         if hws[i] >= w >= hws[i + 1]:
             frac = (hws[i] - w) / max(hws[i] - hws[i + 1], 1e-12)
-            return float(ns[i] + frac * (ns[i + 1] - ns[i]))
-    return float(ns[-1])
+            return float(ns[i] + frac * (ns[i + 1] - ns[i])), False
+    return float(ns[-1]), True
 
 
 def savings_bootstrap(task_curves: dict, key: str, base: str, w: float, B: int = 1000, seed: int = 0) -> dict:
@@ -80,7 +84,7 @@ def savings_bootstrap(task_curves: dict, key: str, base: str, w: float, B: int =
         ns_b = np.array(sorted(task_curves[base]))
         hk = np.minimum.accumulate(np.array([boot_hw(key, n) for n in ns_k]))
         hb = np.minimum.accumulate(np.array([boot_hw(base, n) for n in ns_b]))
-        ratios.append(n_to_target(ns_k, hk, w) / max(n_to_target(ns_b, hb, w), 1e-9))
+        ratios.append(n_to_target(ns_k, hk, w)[0] / max(n_to_target(ns_b, hb, w)[0], 1e-9))
     ratios = np.array(ratios)
     return {"ratio": float(np.median(ratios)), "lo": float(np.quantile(ratios, 0.025)), "hi": float(np.quantile(ratios, 0.975))}
 
@@ -169,15 +173,15 @@ def main() -> None:
         summary["tasks"][task] = {}
         # E1 reference n(w).
         ns_b, hb = curve_ns(curves, base)
-        n_base = n_to_target(ns_b, hb, w)
+        n_base, _ = n_to_target(ns_b, hb, w)
         summary["tasks"][task]["E1_n"] = n_base
         for key in sorted(curves):
             if key == base or key.startswith("E0/"):
                 continue
             ns, h = curve_ns(curves, key)
-            n_k = n_to_target(ns, h, w)
+            n_k, cens = n_to_target(ns, h, w)
             sb = savings_bootstrap(curves, key, base, w)
-            summary["tasks"][task][key] = {"n": n_k, **sb,
+            summary["tasks"][task][key] = {"n": n_k, "censored": cens, **sb,
                                            "hw_at": {str(n): curves[key][n]["mean_hw"] for n in sorted(curves[key])},
                                            "coverage": {str(n): curves[key][n]["coverage"] for n in sorted(curves[key])}}
         # E0 judge-only error (H4).

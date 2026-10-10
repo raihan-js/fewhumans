@@ -730,11 +730,11 @@
     "method": "E3+R0",
     "n": 400,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.03524881135984414,
+    "mean_n": 318.0,
+    "infeasible": 0
   },
   {
     "task": "mtbench-winrate",
@@ -774,11 +774,11 @@
     "method": "E4+R1",
     "n": 400,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.03529186983616793,
+    "mean_n": 318.0,
+    "infeasible": 0
   },
   {
     "task": "mtbench-winrate",
@@ -1324,33 +1324,33 @@
     "method": "E3+R0",
     "n": 100,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.3086123029319978,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
     "method": "E3+R0",
     "n": 200,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.3086123029319978,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
     "method": "E3+R0",
     "n": 400,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.3086123029319978,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
@@ -1368,33 +1368,33 @@
     "method": "E4+R1",
     "n": 100,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.30941905506807826,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
     "method": "E4+R1",
     "n": 200,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.30941905506807826,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",
     "method": "E4+R1",
     "n": 400,
     "R": 2000,
-    "coverage": 0.0,
+    "coverage": 1.0,
     "mcse": 0.0,
-    "mean_hw": null,
-    "mean_n": null,
-    "infeasible": 2000
+    "mean_hw": 0.30941905506807826,
+    "mean_n": 100.0,
+    "infeasible": 0
   },
   {
     "task": "summeval-consistency",

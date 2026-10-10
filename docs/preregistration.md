@@ -57,4 +57,4 @@ toxicity-n≈100 corner (known ~1pp undercoverage, listed).
   full vs best).
 
 ## Commit hash of this registration
-(TBD: filled at commit time — see docs/decisions.md.)
+2ee2c9383a47c6e6b55ced999717ee6706832f69

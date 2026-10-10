@@ -76,7 +76,7 @@ def run_budget(task: dict[str, np.ndarray], budget: int, rep: int) -> dict[str, 
     lab_idx: list[int] = []
     for s in ("unanimous", "split"):
         pool = ids[strata == s]
-        m = max(2, int(round(budget * len(pool) / N)))
+        m = max(2, round(budget * len(pool) / N))
         lab_idx += list(rng.choice(pool, min(m, len(pool)), replace=False))
     lab_idx = lab_idx[:budget]
     r = stratified_ppi_plus(

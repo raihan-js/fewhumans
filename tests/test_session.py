@@ -55,7 +55,6 @@ def test_session_all_methods_with_active_router(tmp_path):
     from fewhumans.core.session import Session
     from fewhumans.core.task import Categorical, Mean, Task
 
-    rng = __import__("random").Random(0)
     items = [Item(f"i{k}", {"text": f"t{k}", "truth": "correct" if k % 2 == 0 else "incorrect"}) for k in range(80)]
     task = Task(Categorical(["correct", "incorrect"]), Mean(of=lambda y: str(y) == "correct"))
     panel = fh.Panel([

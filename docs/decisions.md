@@ -2,6 +2,18 @@
 
  append-only, newest first.
 
+## 2026-10-10 — Phase 8 ship status
+- GitHub LIVE + CI green (fixed: newer-numpy mypy strictness on bare
+  `np.ndarray` → `npt.NDArray[np.float64]`; lesson: CI installs latest deps,
+  local passed on older stubs).
+- JudgeBank LIVE (8 parquets + card); 2.8MB release tracked in git
+  (`.gitignore`: `data/*` + `!data/release/` — a bare `data/` exclusion
+  silently blocks negations).
+- Article queued ready:true; portfolio live (16 projects, 1304 tests, 18
+  artifacts); resumes rebuilt (2+1 pages).
+- OPEN: PyPI upload (dist built, needs token), paper PDF (needs texlive via
+  owner sudo) + arXiv submission (owner account).
+
 ## 2026-10-10 — Phase 7 dogfood (results/dogfood.json)
 - OracleBench pointwise false-accept: published 147/1333 = 11.03% reproduced
   exactly from raw files; FewHumans n=100: E1 13.0% [6.3,19.7], E2 12.6%,

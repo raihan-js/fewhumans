@@ -14,6 +14,8 @@ pip install fewhumans
 
 ![pooled savings](images/forest.png)
 
+Write-up: [Your LLM Judge Is Lying to You, a Little](https://dev.to/raihan-js/your-llm-judge-is-lying-to-you-a-little-1lke)
+
 Pre-registered study, 7 real annotation tasks, 3-judge panel (2 local + 1 API):
 
 | method | human labels vs human-only |
